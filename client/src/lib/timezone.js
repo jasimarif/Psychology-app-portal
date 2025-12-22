@@ -3,6 +3,14 @@ export const EST_TIMEZONE = 'America/New_York';
 
 
 export const formatDateEST = (date, options = {}) => {
+  if (!date) return 'Invalid Date';
+  
+  const dateObj = typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date)
+    ? new Date(date + 'T12:00:00')
+    : new Date(date);
+  
+  if (isNaN(dateObj.getTime())) return 'Invalid Date';
+  
   const defaultOptions = {
     timeZone: EST_TIMEZONE,
     weekday: 'long',
@@ -14,11 +22,32 @@ export const formatDateEST = (date, options = {}) => {
     hour12: true
   };
   
-  return new Date(date).toLocaleString('en-US', { ...defaultOptions, ...options });
+  return dateObj.toLocaleString('en-US', { ...defaultOptions, ...options });
 };
 
 
 export const formatDateOnlyEST = (date, format = 'long') => {
+  if (!date) return 'Invalid Date';
+  
+  let dateObj;
+  
+  // Handle different date formats
+  if (typeof date === 'string') {
+    // Extract just the date part if it's an ISO string (e.g., "2025-12-30T00:00:00.000Z" -> "2025-12-30")
+    const dateOnlyMatch = date.match(/^(\d{4}-\d{2}-\d{2})/);
+    if (dateOnlyMatch) {
+      // Use the extracted date with noon time to avoid timezone shifts
+      dateObj = new Date(dateOnlyMatch[1] + 'T12:00:00');
+    } else {
+      dateObj = new Date(date);
+    }
+  } else {
+    dateObj = new Date(date);
+  }
+  
+  // Check if date is valid
+  if (isNaN(dateObj.getTime())) return 'Invalid Date';
+  
   const formats = {
     long: {
       timeZone: EST_TIMEZONE,
@@ -42,7 +71,7 @@ export const formatDateOnlyEST = (date, format = 'long') => {
     }
   };
   
-  return new Date(date).toLocaleDateString('en-US', formats[format] || formats.long);
+  return dateObj.toLocaleDateString('en-US', formats[format] || formats.long);
 };
 
 
