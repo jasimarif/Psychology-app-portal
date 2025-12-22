@@ -19,6 +19,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Plus } from "lucide-react";
 import { CalendarIcon, TimeIcon, CloseIcon } from "@/components/icons/DuoTuneIcons";
+import { formatTime24to12 } from "@/lib/timezone";
 
 const DAYS_OF_WEEK = [
   { value: 0, label: 'Sunday' },
@@ -300,7 +301,7 @@ const AvailabilitySetup = () => {
               </div>
 
               <div className="bg-white p-4 rounded-md border border-customGreen/10">
-                <p className="text-xs font-semibold text-gray-600 uppercase mb-3">Weekly Schedule</p>
+                <p className="text-xs font-semibold text-gray-600 uppercase mb-3">Weekly Schedule (EST)</p>
                 <div className="space-y-2">
                   {availability.schedule
                     .sort((a, b) => a.dayOfWeek - b.dayOfWeek)
@@ -318,7 +319,7 @@ const AvailabilitySetup = () => {
                               activeSlots.map((slot, slotIdx) => (
                                 <div key={slotIdx} className="flex items-center gap-2 text-sm text-gray-700">
                                   <TimeIcon className="w-3 h-3 text-customGreen" />
-                                  <span>{slot.startTime} - {slot.endTime}</span>
+                                  <span>{formatTime24to12(slot.startTime)} - {formatTime24to12(slot.endTime)}</span>
                                 </div>
                               ))
                             ) : (

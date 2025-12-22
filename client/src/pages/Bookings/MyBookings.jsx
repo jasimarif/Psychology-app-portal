@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { format } from "date-fns";
+import { formatDateOnlyEST, formatTime24to12 } from "@/lib/timezone";
 import {
   CalendarIcon,
   TimeIcon,
@@ -219,7 +219,7 @@ const MyBookings = () => {
 
   const formatDate = (dateString) => {
     try {
-      return format(new Date(dateString), 'EEEE, MMMM d, yyyy');
+      return formatDateOnlyEST(dateString, 'long');
     } catch {
       return dateString;
     }
@@ -468,11 +468,10 @@ const MyBookings = () => {
                               <TimeIcon className="w-5 h-5 text-customGreen" />
                             </div>
                             <div>
-                              <p className="text-xs text-gray-500 font-medium">Time</p>
+                              <p className="text-xs text-gray-500 font-medium">Time (EST)</p>
                               <p className="text-sm font-semibold text-gray-900">
-                                {booking.startTime} - {booking.endTime}
+                                {formatTime24to12(booking.startTime)} - {formatTime24to12(booking.endTime)}
                               </p>
-                              <p className="text-xs text-gray-500">{booking.timezone}</p>
                             </div>
                           </div>
 
