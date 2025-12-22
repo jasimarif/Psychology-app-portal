@@ -32,8 +32,7 @@ import {
   BriefcaseIcon,
   StatsIcon,
   ArrowRightIcon,
-  UsersIcon,
-  AlertIcon
+  UsersIcon
 } from "@/components/icons/DuoTuneIcons";
 import { Loader2 } from "lucide-react";
 
@@ -101,8 +100,6 @@ const MyBookings = () => {
 
   const getFilteredBookings = () => {
     switch (filter) {
-      case "pending":
-        return bookings.filter(b => b.status === 'pending');
       case "confirmed":
         return bookings.filter(b => b.status === 'confirmed');
       case "completed":
@@ -111,39 +108,6 @@ const MyBookings = () => {
         return bookings.filter(b => b.status === 'cancelled');
       default:
         return bookings;
-    }
-  };
-
-  const handleConfirmBooking = async (bookingId) => {
-    try {
-      setActionLoading(bookingId);
-      const token = await currentUser.getIdToken();
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/bookings/${bookingId}/confirm`,
-        {
-          method: 'PATCH',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Failed to confirm booking');
-      }
-
-      // Update local state
-      setBookings(prev => prev.map(b =>
-        b._id === bookingId ? { ...b, status: 'confirmed' } : b
-      ));
-    } catch (err) {
-      console.error('Error confirming booking:', err);
-      alert(err.message);
-    } finally {
-      setActionLoading(null);
     }
   };
 
@@ -186,11 +150,6 @@ const MyBookings = () => {
 
   const getStatusBadge = (status) => {
     const variants = {
-      pending: { 
-        className: "bg-amber-100 text-amber-700 hover:bg-amber-100", 
-        label: "Pending",
-        icon: <AlertIcon className="w-3 h-3" />
-      },
       confirmed: { 
         className: "bg-emerald-100 text-emerald-700 hover:bg-emerald-100", 
         label: "Confirmed",
@@ -208,7 +167,7 @@ const MyBookings = () => {
       }
     };
 
-    const variant = variants[status] || variants.pending;
+    const variant = variants[status] || variants.confirmed;
     return (
       <Badge className={`${variant.className} border font-medium gap-1.5 px-3 py-1`}>
         {variant.icon}
@@ -228,7 +187,6 @@ const MyBookings = () => {
   const getBookingStats = () => {
     return {
       total: bookings.length,
-      pending: bookings.filter(b => b.status === 'pending').length,
       confirmed: bookings.filter(b => b.status === 'confirmed').length,
       cancelled: bookings.filter(b => b.status === 'cancelled').length,
       completed: bookings.filter(b => b.status === 'completed').length,
@@ -305,20 +263,6 @@ const MyBookings = () => {
                 </CardContent>
               </Card>
 
-              <Card className="rounded-2xl border-0 shadow-none bg-amber-50">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-amber-200/50 flex items-center justify-center">
-                      <AlertIcon className="w-5 h-5 text-amber-700" />
-                    </div>
-                    <div>
-                      <p className="text-xl font-bold text-amber-900">{stats.pending}</p>
-                      <p className="text-xs text-amber-700">Pending</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
               <Card className="rounded-2xl border-0 shadow-none bg-emerald-50">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
@@ -388,7 +332,7 @@ const MyBookings = () => {
                 <div className="text-center">
                   <p className="text-red-600 mb-2">{error}</p>
                   <Button 
-                    onClick={() => window.location.reload()} 
+                    onClick={() => loadBookings()}
                     className="bg-customGreen hover:bg-customGreenHover text-white rounded-xl px-6 h-11"
                   >
                     Try Again
@@ -518,38 +462,7 @@ const MyBookings = () => {
                           <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-2">Actions</p>
 
                           <div className="space-y-3">
-                            {booking.status === 'pending' && (
-                              <>
-                                <Button
-                                  className="w-full justify-start rounded-xl bg-customGreen hover:bg-customGreenHover text-white transition-all cursor-pointer"
-                                  onClick={() => handleConfirmBooking(booking._id)}
-                                  disabled={actionLoading === booking._id}
-                                >
-                                  {actionLoading === booking._id ? (
-                                    <>
-                                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                      Processing...
-                                    </>
-                                  ) : (
-                                    <>
-                                      <CheckIcon className="w-4 h-4 mr-2" />
-                                      Confirm Booking
-                                    </>
-                                  )}
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  className="w-full justify-start rounded-xl border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-all cursor-pointer"
-                                  onClick={() => handleCancelBooking(booking._id)}
-                                  disabled={actionLoading === booking._id}
-                                >
-                                  <CloseIcon className="w-4 h-4 mr-2" />
-                                  Cancel Booking
-                                </Button>
-                              </>
-                            )}
-
-                            {booking.status === 'confirmed' && (
+                            {(booking.status === 'confirmed' || booking.status === 'pending') && (
                               <Button
                                 variant="outline"
                                 className="w-full justify-start rounded-xl border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-all cursor-pointer"
