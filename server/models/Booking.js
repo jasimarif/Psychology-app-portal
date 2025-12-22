@@ -6,6 +6,14 @@ const bookingSchema = new mongoose.Schema({
     required: true,
     index: true
   },
+  userEmail: {
+    type: String,
+    default: ''
+  },
+  userName: {
+    type: String,
+    default: ''
+  },
   psychologistId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Psychologist',

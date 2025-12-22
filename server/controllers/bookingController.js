@@ -1,5 +1,7 @@
 import Booking from '../models/Booking.js';
 import Psychologist from '../models/Psychologist.js';
+import emailCalendarService from '../services/emailCalendarService.js';
+import { formatDateOnlyEST, formatShortDateEST, formatTime24to12 } from '../utils/timezone.js';
 
 // Get all bookings for a psychologist
 export const getPsychologistBookings = async (req, res) => {
@@ -93,6 +95,42 @@ export const cancelBooking = async (req, res) => {
     booking.cancelledBy = 'psychologist';
     booking.cancelledAt = new Date();
     await booking.save();
+
+    // Send cancellation email notifications
+    if (emailCalendarService.isAvailable()) {
+      try {
+        // Get user email from booking if available
+        const userEmail = booking.userEmail || '';
+        const recipients = [psychologist.email, userEmail].filter(Boolean);
+
+        if (recipients.length > 0) {
+          const formattedDate = formatDateOnlyEST(booking.appointmentDate);
+          const shortDate = formatShortDateEST(booking.appointmentDate);
+          const formattedStartTime = formatTime24to12(booking.startTime);
+          
+          const appointmentDateTimeForEmail = new Date(booking.appointmentDate);
+          const [cancelHours, cancelMinutes] = booking.startTime.split(':').map(Number);
+          appointmentDateTimeForEmail.setHours(cancelHours, cancelMinutes, 0, 0);
+
+          await emailCalendarService.sendCancellationEmail({
+            to: recipients,
+            subject: `Therapy Session Cancelled - ${shortDate} at ${formattedStartTime} EST`,
+            eventTitle: `Psychology Session with ${psychologist.name}`,
+            startTime: appointmentDateTimeForEmail,
+            reason: reason,
+            canceledBy: 'psychologist',
+            canceledByName: psychologist.name,
+            formattedDate: formattedDate,
+            formattedTime: formattedStartTime
+          });
+
+          console.log(`Cancellation emails sent to: ${recipients.join(', ')}`);
+        }
+      } catch (emailError) {
+        console.error('Failed to send cancellation emails:', emailError.message);
+        // Continue even if email fails
+      }
+    }
 
     res.json({
       success: true,
