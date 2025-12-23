@@ -85,7 +85,7 @@ const psychologistSchema = new mongoose.Schema({
   availability: {
     timezone: {
       type: String,
-      default: 'America/New_York'
+      required: false
     },
     sessionDuration: {
       type: Number,

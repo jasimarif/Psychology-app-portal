@@ -1,18 +1,14 @@
 
-export const EST_TIMEZONE = 'America/New_York';
-
-
-export const formatDateEST = (date, options = {}) => {
+export const formatDate = (date, options = {}) => {
   if (!date) return 'Invalid Date';
-  
+
   const dateObj = typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date)
     ? new Date(date + 'T12:00:00')
     : new Date(date);
-  
+
   if (isNaN(dateObj.getTime())) return 'Invalid Date';
-  
+
   const defaultOptions = {
-    timeZone: EST_TIMEZONE,
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -21,16 +17,16 @@ export const formatDateEST = (date, options = {}) => {
     minute: '2-digit',
     hour12: true
   };
-  
+
   return dateObj.toLocaleString('en-US', { ...defaultOptions, ...options });
 };
 
 
-export const formatDateOnlyEST = (date, format = 'long') => {
+export const formatDateOnly = (date, format = 'long') => {
   if (!date) return 'Invalid Date';
-  
+
   let dateObj;
-  
+
   // Handle different date formats
   if (typeof date === 'string') {
     // Extract just the date part if it's an ISO string (e.g., "2025-12-30T00:00:00.000Z" -> "2025-12-30")
@@ -44,40 +40,36 @@ export const formatDateOnlyEST = (date, format = 'long') => {
   } else {
     dateObj = new Date(date);
   }
-  
+
   // Check if date is valid
   if (isNaN(dateObj.getTime())) return 'Invalid Date';
-  
+
   const formats = {
     long: {
-      timeZone: EST_TIMEZONE,
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     },
     medium: {
-      timeZone: EST_TIMEZONE,
       weekday: 'short',
       year: 'numeric',
       month: 'short',
       day: 'numeric'
     },
     short: {
-      timeZone: EST_TIMEZONE,
       month: '2-digit',
       day: '2-digit',
       year: 'numeric'
     }
   };
-  
+
   return dateObj.toLocaleDateString('en-US', formats[format] || formats.long);
 };
 
 
-export const formatTimeOnlyEST = (date) => {
+export const formatTimeOnly = (date) => {
   return new Date(date).toLocaleString('en-US', {
-    timeZone: EST_TIMEZONE,
     hour: '2-digit',
     minute: '2-digit',
     hour12: true
@@ -94,27 +86,26 @@ export const formatTime24to12 = (time24) => {
 };
 
 
-export const formatTimeRangeEST = (startTime, endTime) => {
+export const formatTimeRange = (startTime, endTime) => {
   const start = formatTime24to12(startTime);
   const end = formatTime24to12(endTime);
-  return `${start} - ${end} EST`;
+  return `${start} - ${end}`;
 };
 
 
 export const formatBookingDateTime = (appointmentDate, startTime, endTime) => {
   return {
-    date: formatDateOnlyEST(appointmentDate, 'medium'),
-    time: formatTimeRangeEST(startTime, endTime),
-    fullDateTime: `${formatDateOnlyEST(appointmentDate, 'long')} at ${formatTime24to12(startTime)} EST`
+    date: formatDateOnly(appointmentDate, 'medium'),
+    time: formatTimeRange(startTime, endTime),
+    fullDateTime: `${formatDateOnly(appointmentDate, 'long')} at ${formatTime24to12(startTime)}`
   };
 };
 
 export default {
-  EST_TIMEZONE,
-  formatDateEST,
-  formatDateOnlyEST,
-  formatTimeOnlyEST,
+  formatDate,
+  formatDateOnly,
+  formatTimeOnly,
   formatTime24to12,
-  formatTimeRangeEST,
+  formatTimeRange,
   formatBookingDateTime
 };

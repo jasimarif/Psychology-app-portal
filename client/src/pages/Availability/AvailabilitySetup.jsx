@@ -31,19 +31,6 @@ const DAYS_OF_WEEK = [
   { value: 6, label: 'Saturday' }
 ];
 
-const TIMEZONES = [
-  { value: 'America/New_York', label: 'Eastern Time (ET)' },
-  { value: 'America/Chicago', label: 'Central Time (CT)' },
-  { value: 'America/Denver', label: 'Mountain Time (MT)' },
-  { value: 'America/Los_Angeles', label: 'Pacific Time (PT)' },
-  { value: 'Europe/London', label: 'London (GMT)' },
-  { value: 'Europe/Paris', label: 'Central European Time (CET)' },
-  { value: 'Asia/Dubai', label: 'Dubai (GST)' },
-  { value: 'Asia/Kolkata', label: 'India (IST)' },
-  { value: 'Asia/Singapore', label: 'Singapore (SGT)' },
-  { value: 'Australia/Sydney', label: 'Sydney (AEDT)' }
-];
-
 const SESSION_DURATIONS = [
   { value: 30, label: '30 minutes' },
   { value: 45, label: '45 minutes' },
@@ -61,7 +48,6 @@ const AvailabilitySetup = () => {
   const [success, setSuccess] = useState("");
 
   const [availability, setAvailability] = useState({
-    timezone: 'America/New_York',
     sessionDuration: 60,
     schedule: []
   });
@@ -287,21 +273,15 @@ const AvailabilitySetup = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="mb-4">
                 <div className="bg-white p-3 rounded-md border border-customGreen/10">
                   <p className="text-xs font-semibold text-gray-600 uppercase mb-1">Session Duration</p>
                   <p className="text-lg font-bold text-gray-900">{availability.sessionDuration} minutes</p>
                 </div>
-                <div className="bg-white p-3 rounded-md border border-customGreen/10">
-                  <p className="text-xs font-semibold text-gray-600 uppercase mb-1">Timezone</p>
-                  <p className="text-sm font-medium text-gray-900">
-                    {TIMEZONES.find(tz => tz.value === availability.timezone)?.label || availability.timezone}
-                  </p>
-                </div>
               </div>
 
               <div className="bg-white p-4 rounded-md border border-customGreen/10">
-                <p className="text-xs font-semibold text-gray-600 uppercase mb-3">Weekly Schedule (EST)</p>
+                <p className="text-xs font-semibold text-gray-600 uppercase mb-3">Weekly Schedule</p>
                 <div className="space-y-2">
                   {availability.schedule
                     .sort((a, b) => a.dayOfWeek - b.dayOfWeek)
@@ -340,28 +320,9 @@ const AvailabilitySetup = () => {
           <Card className="border-customGreen/10 shadow-none">
             <CardHeader>
               <CardTitle>General Settings</CardTitle>
-              <CardDescription>Set your timezone and session duration</CardDescription>
+              <CardDescription>Set your session duration</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="timezone">Timezone *</Label>
-                <Select
-                  value={availability.timezone}
-                  onValueChange={(value) => setAvailability(prev => ({ ...prev, timezone: value }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select timezone" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {TIMEZONES.map((tz) => (
-                      <SelectItem key={tz.value} value={tz.value}>
-                        {tz.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
               <div className="space-y-2">
                 <Label htmlFor="sessionDuration">Session Duration *</Label>
                 <Select

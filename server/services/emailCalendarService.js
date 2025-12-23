@@ -1,9 +1,7 @@
 import pkg from 'nodemailer';
 const { createTransport } = pkg;
 import ical from 'ical-generator';
-import { formatDateEST, formatTime24to12, APP_TIMEZONE } from '../utils/timezone.js';
-
-const EST_TIMEZONE = 'America/New_York';
+import { formatDate } from '../utils/timezone.js';
 
 class EmailCalendarService {
   constructor() {
@@ -69,9 +67,6 @@ class EmailCalendarService {
         formattedTime
       } = eventData;
 
-      // Always use EST timezone for consistency
-      const displayTimezone = EST_TIMEZONE;
-
       const calendar = ical({ name: 'Psychology Portal - Session Booking' });
 
       calendar.createEvent({
@@ -80,7 +75,6 @@ class EmailCalendarService {
         summary: eventTitle,
         description: eventDescription,
         location: location || '',
-        timezone: displayTimezone,
         url: location, 
         organizer: {
           name: 'Psychology Portal',
@@ -96,7 +90,7 @@ class EmailCalendarService {
 
       const displayDateTime = (formattedDate && formattedTime) 
         ? `${formattedDate} at ${formattedTime}`
-        : formatDateEST(startTime);
+        : formatDate(startTime);
       const durationMinutes = Math.round((new Date(endTime) - new Date(startTime)) / 60000);
 
       // Email HTML body
@@ -125,7 +119,7 @@ class EmailCalendarService {
               <p>Your therapy session has been scheduled. Please find the details below:</p>
 
               <div class="details">
-                <p><strong>📅 Date & Time:</strong><br>${displayDateTime}<br><span class="timezone-note">(Eastern Time - EST/EDT)</span></p>
+                <p><strong>📅 Date & Time:</strong><br>${displayDateTime}<br><span class="timezone-note"></span></p>
                 <p><strong>⏱️ Duration:</strong><br>${durationMinutes} minutes</p>
                 ${eventDescription ? `<p><strong>📝 Notes:</strong><br>${eventDescription}</p>` : ''}
               </div>
@@ -142,7 +136,7 @@ class EmailCalendarService {
             </div>
             <div class="footer">
               <p>Psychology Portal - Your Mental Wellness Partner</p>
-              <p class="timezone-note">All times are in Eastern Time (EST/EDT)</p>
+              <p class="timezone-note">Times shown in UTC. They will display in your local timezone when added to your calendar.</p>
             </div>
           </div>
         </body>
@@ -207,7 +201,7 @@ class EmailCalendarService {
       // Use pre-formatted date/time if provided
       const displayDateTime = (formattedDate && formattedTime) 
         ? `${formattedDate} at ${formattedTime}`
-        : formatDateEST(startTime);
+        : formatDate(startTime);
 
       const htmlBody = `
         <!DOCTYPE html>
@@ -238,7 +232,7 @@ class EmailCalendarService {
             </div>
             <div class="footer">
               <p>Psychology Portal - Your Mental Wellness Partner</p>
-              <p class="timezone-note">All times are in Eastern Time (EST/EDT)</p>
+              <p class="timezone-note">Times shown in UTC. They will display in your local timezone when added to your calendar.</p>
             </div>
           </div>
         </body>

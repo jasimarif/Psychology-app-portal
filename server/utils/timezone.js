@@ -1,11 +1,10 @@
 
 
-const EST_TIMEZONE = 'America/New_York';
+// Server-side timezone utilities
+// All dates are stored in UTC. These utilities are for formatting only.
 
-
-export const formatDateEST = (date, options = {}) => {
+export const formatDate = (date, options = {}) => {
   const defaultOptions = {
-    timeZone: EST_TIMEZONE,
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -14,14 +13,14 @@ export const formatDateEST = (date, options = {}) => {
     minute: '2-digit',
     hour12: true
   };
-  
+
   return new Date(date).toLocaleString('en-US', { ...defaultOptions, ...options });
 };
 
 
-export const formatDateOnlyEST = (date) => {
+export const formatDateOnly = (date) => {
   let dateObj;
-  
+
   if (typeof date === 'string' && date.includes('-')) {
     const [year, month, day] = date.split('T')[0].split('-');
     dateObj = new Date(Date.UTC(parseInt(year), parseInt(month) - 1, parseInt(day), 12, 0, 0));
@@ -33,9 +32,8 @@ export const formatDateOnlyEST = (date) => {
   } else {
     dateObj = new Date(date);
   }
-  
+
   return dateObj.toLocaleDateString('en-US', {
-    timeZone: EST_TIMEZONE,
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -44,9 +42,8 @@ export const formatDateOnlyEST = (date) => {
 };
 
 
-export const formatTimeOnlyEST = (date) => {
+export const formatTimeOnly = (date) => {
   return new Date(date).toLocaleString('en-US', {
-    timeZone: EST_TIMEZONE,
     hour: '2-digit',
     minute: '2-digit',
     hour12: true
@@ -54,9 +51,9 @@ export const formatTimeOnlyEST = (date) => {
 };
 
 
-export const formatShortDateEST = (date) => {
+export const formatShortDate = (date) => {
   let dateObj;
-  
+
   if (typeof date === 'string' && date.includes('-')) {
     const [year, month, day] = date.split('T')[0].split('-');
     dateObj = new Date(Date.UTC(parseInt(year), parseInt(month) - 1, parseInt(day), 12, 0, 0));
@@ -68,9 +65,8 @@ export const formatShortDateEST = (date) => {
   } else {
     dateObj = new Date(date);
   }
-  
+
   return dateObj.toLocaleDateString('en-US', {
-    timeZone: EST_TIMEZONE,
     month: '2-digit',
     day: '2-digit',
     year: 'numeric'
@@ -86,51 +82,35 @@ export const formatTime24to12 = (time24) => {
 };
 
 
-export const createESTDateTime = (dateStr, timeStr) => {
+export const createDateTime = (dateStr, timeStr) => {
   const date = new Date(dateStr);
   const [hours, minutes] = timeStr.split(':').map(Number);
-  
+
   const year = date.getFullYear();
   const month = date.getMonth();
   const day = date.getDate();
-  
+
   const dateTimeString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}T${timeStr}:00`;
-  
-  const estDate = new Date(dateTimeString);
-  
-  const formatter = new Intl.DateTimeFormat('en-US', {
-    timeZone: EST_TIMEZONE,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false
-  });
-  
-  return estDate;
+
+  return new Date(dateTimeString);
 };
 
 
-export const getISOStringForEST = (date, timeStr) => {
+export const getISOString = (date, timeStr) => {
   const dateObj = new Date(date);
   const year = dateObj.getFullYear();
   const month = String(dateObj.getMonth() + 1).padStart(2, '0');
   const day = String(dateObj.getDate()).padStart(2, '0');
-  
+
   return `${year}-${month}-${day}T${timeStr}:00`;
 };
 
-export const APP_TIMEZONE = EST_TIMEZONE;
-
 export default {
-  formatDateEST,
-  formatDateOnlyEST,
-  formatTimeOnlyEST,
-  formatShortDateEST,
+  formatDate,
+  formatDateOnly,
+  formatTimeOnly,
+  formatShortDate,
   formatTime24to12,
-  createESTDateTime,
-  getISOStringForEST,
-  APP_TIMEZONE
+  createDateTime,
+  getISOString
 };

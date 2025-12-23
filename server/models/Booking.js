@@ -35,8 +35,7 @@ const bookingSchema = new mongoose.Schema({
   },
   timezone: {
     type: String,
-    required: true,
-    default: 'America/New_York'
+    required: false
   },
   status: {
     type: String,

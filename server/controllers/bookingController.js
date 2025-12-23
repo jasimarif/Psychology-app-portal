@@ -1,7 +1,7 @@
 import Booking from '../models/Booking.js';
 import Psychologist from '../models/Psychologist.js';
 import emailCalendarService from '../services/emailCalendarService.js';
-import { formatDateOnlyEST, formatShortDateEST, formatTime24to12 } from '../utils/timezone.js';
+import { formatDateOnly, formatShortDate, formatTime24to12 } from '../utils/timezone.js';
 
 // Get all bookings for a psychologist
 export const getPsychologistBookings = async (req, res) => {
@@ -104,8 +104,8 @@ export const cancelBooking = async (req, res) => {
         const recipients = [psychologist.email, userEmail].filter(Boolean);
 
         if (recipients.length > 0) {
-          const formattedDate = formatDateOnlyEST(booking.appointmentDate);
-          const shortDate = formatShortDateEST(booking.appointmentDate);
+          const formattedDate = formatDateOnly(booking.appointmentDate);
+          const shortDate = formatShortDate(booking.appointmentDate);
           const formattedStartTime = formatTime24to12(booking.startTime);
           
           const appointmentDateTimeForEmail = new Date(booking.appointmentDate);
