@@ -381,7 +381,7 @@ const MyBookings = () => {
                             <div className="flex items-start justify-between mb-2">
                               <div>
                                 <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-customGreen transition-colors">
-                                  Client ID: {booking.userId}
+                                  {booking.userName || booking.userEmail || `Client ID: ${booking.userId}`}
                                 </h3>
                                 <p className="text-sm text-gray-600 flex items-center gap-1">
                                   <BriefcaseIcon className="w-3.5 h-3.5" />
