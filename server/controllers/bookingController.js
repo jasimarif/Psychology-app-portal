@@ -1,6 +1,7 @@
 import Booking from '../models/Booking.js';
 import Psychologist from '../models/Psychologist.js';
 import emailCalendarService from '../services/emailCalendarService.js';
+import { updateCompletedSessions } from '../utils/sessionCompletionService.js';
 import { formatDateOnly, formatShortDate, formatTime24to12 } from '../utils/timezone.js';
 
 // Get all bookings for a psychologist
@@ -9,7 +10,6 @@ export const getPsychologistBookings = async (req, res) => {
     const { psychologistId } = req.params;
     const { status, startDate, endDate } = req.query;
 
-    // Verify psychologist owns this profile
     const psychologist = await Psychologist.findById(psychologistId);
     if (!psychologist) {
       return res.status(404).json({
@@ -25,7 +25,8 @@ export const getPsychologistBookings = async (req, res) => {
       });
     }
 
-    // Build query
+    await updateCompletedSessions();
+
     const query = { psychologistId };
 
     if (status) {
@@ -56,7 +57,6 @@ export const getPsychologistBookings = async (req, res) => {
   }
 };
 
-// Cancel a booking (psychologist)
 export const cancelBooking = async (req, res) => {
   try {
     const { bookingId } = req.params;
@@ -70,7 +70,6 @@ export const cancelBooking = async (req, res) => {
       });
     }
 
-    // Check if psychologist is authorized to cancel
     const psychologist = await Psychologist.findById(booking.psychologistId);
     const isPsychologist = psychologist && psychologist.userId === req.user.uid;
 
@@ -81,7 +80,6 @@ export const cancelBooking = async (req, res) => {
       });
     }
 
-    // Check if booking can be cancelled
     if (booking.status === 'cancelled' || booking.status === 'completed') {
       return res.status(400).json({
         success: false,
@@ -89,17 +87,14 @@ export const cancelBooking = async (req, res) => {
       });
     }
 
-    // Update booking
     booking.status = 'cancelled';
     booking.cancellationReason = reason || '';
     booking.cancelledBy = 'psychologist';
     booking.cancelledAt = new Date();
     await booking.save();
 
-    // Send cancellation email notifications
     if (emailCalendarService.isAvailable()) {
       try {
-        // Get user email from booking if available
         const userEmail = booking.userEmail || '';
         const recipients = [psychologist.email, userEmail].filter(Boolean);
 
@@ -128,7 +123,6 @@ export const cancelBooking = async (req, res) => {
         }
       } catch (emailError) {
         console.error('Failed to send cancellation emails:', emailError.message);
-        // Continue even if email fails
       }
     }
 
@@ -147,7 +141,6 @@ export const cancelBooking = async (req, res) => {
   }
 };
 
-// Confirm a booking (psychologist only)
 export const confirmBooking = async (req, res) => {
   try {
     const { bookingId } = req.params;
@@ -160,7 +153,6 @@ export const confirmBooking = async (req, res) => {
       });
     }
 
-    // Verify psychologist owns this booking
     const psychologist = await Psychologist.findById(booking.psychologistId);
     if (!psychologist || psychologist.userId !== req.user.uid) {
       return res.status(403).json({
