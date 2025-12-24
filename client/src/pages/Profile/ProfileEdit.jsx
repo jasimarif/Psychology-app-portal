@@ -643,15 +643,23 @@ const ProfileEdit = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="price">Session Price *</Label>
-                  <Input
-                    id="price"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleInputChange}
-                    required
-                    className="focus-visible:ring-customGreen"
-                  />
+                  <Label htmlFor="price">Session Price (USD) *</Label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                    <Input
+                      id="price"
+                      name="price"
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={formData.price}
+                      onChange={handleInputChange}
+                      placeholder="150"
+                      className="pl-7 focus-visible:ring-customGreen"
+                      required
+                    />
+                  </div>
+                  <p className="text-xs text-gray-500">Enter amount in USD (e.g., 150 for $150)</p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="typicalHours">Typical Hours *</Label>
