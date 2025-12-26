@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 class ZoomService {
   constructor() {
     this.baseURL = 'https://api.zoom.us/v2';
@@ -35,22 +33,28 @@ class ZoomService {
       const clientId = process.env.ZOOM_CLIENT_ID;
       const clientSecret = process.env.ZOOM_CLIENT_SECRET;
 
-      const response = await axios.post(
+      const response = await fetch(
         `https://zoom.us/oauth/token?grant_type=account_credentials&account_id=${accountId}`,
-        {},
         {
+          method: 'POST',
           headers: {
             'Authorization': `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`
           }
         }
       );
 
-      this.accessToken = response.data.access_token;
-      this.tokenExpiry = Date.now() + (response.data.expires_in * 1000);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      this.accessToken = data.access_token;
+      this.tokenExpiry = Date.now() + (data.expires_in * 1000);
 
       return this.accessToken;
     } catch (error) {
-      console.error('Error getting Zoom access token:', error.response?.data || error.message);
+      console.error('Error getting Zoom access token:', error.message);
       throw new Error('Failed to authenticate with Zoom');
     }
   }
@@ -72,25 +76,32 @@ class ZoomService {
     try {
       await this.ensureValidToken();
 
-      await axios.delete(
+      const response = await fetch(
         `${this.baseURL}/meetings/${meetingId}`,
         {
+          method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${this.accessToken}`
           }
         }
       );
 
-      console.log(`Zoom meeting ${meetingId} deleted successfully`);
-      return true;
-    } catch (error) {
       // If meeting not found (404), consider it already deleted
-      if (error.response?.status === 404) {
+      if (response.status === 404) {
         console.log(`Zoom meeting ${meetingId} not found (may already be deleted)`);
         return true;
       }
-      console.error('Error deleting Zoom meeting:', error.response?.data || error.message);
-      throw new Error(`Failed to delete Zoom meeting: ${error.response?.data?.message || error.message}`);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(`Failed to delete Zoom meeting: ${errorData.message || response.statusText}`);
+      }
+
+      console.log(`Zoom meeting ${meetingId} deleted successfully`);
+      return true;
+    } catch (error) {
+      console.error('Error deleting Zoom meeting:', error.message);
+      throw error;
     }
   }
 
