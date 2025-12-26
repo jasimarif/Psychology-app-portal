@@ -52,6 +52,41 @@ const bookingSchema = new mongoose.Schema({
     enum: ['unpaid', 'paid', 'refunded'],
     default: 'unpaid'
   },
+  // Stripe payment fields
+  stripeSessionId: {
+    type: String,
+    default: null,
+    index: true
+  },
+  stripePaymentIntentId: {
+    type: String,
+    default: null
+  },
+  stripeCustomerId: {
+    type: String,
+    default: null
+  },
+  paidAt: {
+    type: Date,
+    default: null
+  },
+  currency: {
+    type: String,
+    default: 'USD'
+  },
+  // Refund tracking fields
+  stripeRefundId: {
+    type: String,
+    default: null
+  },
+  refundedAt: {
+    type: Date,
+    default: null
+  },
+  refundAmount: {
+    type: Number,
+    default: null
+  },
   notes: {
     type: String,
     maxlength: 500

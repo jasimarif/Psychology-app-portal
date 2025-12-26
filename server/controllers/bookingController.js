@@ -2,6 +2,7 @@ import Booking from '../models/Booking.js';
 import Psychologist from '../models/Psychologist.js';
 import emailCalendarService from '../services/emailCalendarService.js';
 import zoomService from '../services/zoomService.js';
+import stripe from '../config/stripe.js';
 import { updateCompletedSessions } from '../utils/sessionCompletionService.js';
 import { formatDateOnly, formatShortDate, formatTime24to12 } from '../utils/timezone.js';
 
@@ -92,6 +93,61 @@ export const cancelBooking = async (req, res) => {
     booking.cancellationReason = reason || '';
     booking.cancelledBy = 'psychologist';
     booking.cancelledAt = new Date();
+
+    // Process refund if payment was made
+    let refundResult = null;
+    if (booking.paymentStatus === 'paid' && booking.stripePaymentIntentId) {
+      try {
+        const paymentIntent = await stripe.paymentIntents.retrieve(booking.stripePaymentIntentId);
+        const chargeId = paymentIntent.latest_charge;
+        
+        const charge = await stripe.charges.retrieve(chargeId, {
+          expand: ['balance_transaction']
+        });
+        
+        const balanceTx = charge.balance_transaction;
+        const originalAmountCents = charge.amount; 
+        const originalCurrency = charge.currency;
+        
+        const feePercentage = balanceTx.fee / balanceTx.amount;
+        
+        const refundAmountCents = Math.round(originalAmountCents * (1 - feePercentage));
+        const feeAmountCents = originalAmountCents - refundAmountCents;
+        
+        console.log(`Original: ${originalAmountCents/100} ${originalCurrency.toUpperCase()}, Fee %: ${(feePercentage * 100).toFixed(2)}%, Refund: ${refundAmountCents/100} ${originalCurrency.toUpperCase()}`);
+        
+        const refund = await stripe.refunds.create({
+          payment_intent: booking.stripePaymentIntentId,
+          amount: refundAmountCents,
+          metadata: {
+            bookingId: bookingId.toString(),
+            reason: reason || 'Session cancelled by psychologist',
+            cancelledBy: 'psychologist',
+            originalAmount: (originalAmountCents / 100).toString(),
+            feeDeducted: (feeAmountCents / 100).toString(),
+            currency: originalCurrency.toUpperCase()
+          }
+        });
+
+        booking.paymentStatus = 'refunded';
+        booking.stripeRefundId = refund.id;
+        booking.refundedAt = new Date();
+        booking.refundAmount = refundAmountCents / 100;
+        refundResult = {
+          id: refund.id,
+          amount: refundAmountCents / 100,
+          originalAmount: originalAmountCents / 100,
+          feeDeducted: feeAmountCents / 100,
+          currency: originalCurrency.toUpperCase(),
+          status: refund.status
+        };
+        console.log(`Refund processed: ${refund.id}, Amount: ${refundAmountCents/100} ${originalCurrency.toUpperCase()}`);
+      } catch (refundError) {
+        console.error('Failed to process refund:', refundError.message);
+     
+      }
+    }
+
     await booking.save();
 
     // Delete Zoom meeting if exists
@@ -104,7 +160,6 @@ export const cancelBooking = async (req, res) => {
         }
       } catch (zoomError) {
         console.error('Failed to delete Zoom meeting:', zoomError.message);
-        // Continue with cancellation even if Zoom deletion fails
       }
     }
 
@@ -143,8 +198,11 @@ export const cancelBooking = async (req, res) => {
 
     res.json({
       success: true,
-      message: 'Booking cancelled successfully',
-      data: booking
+      message: booking.stripeRefundId 
+        ? 'Booking cancelled and payment refunded successfully' 
+        : 'Booking cancelled successfully',
+      data: booking,
+      refund: refundResult
     });
   } catch (error) {
     console.error('Error in cancelBooking:', error);
