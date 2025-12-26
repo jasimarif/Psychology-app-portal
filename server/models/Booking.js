@@ -65,6 +65,19 @@ const bookingSchema = new mongoose.Schema({
   },
   cancelledAt: {
     type: Date
+  },
+  // Zoom integration fields
+  zoomMeetingId: {
+    type: String,
+    default: null
+  },
+  zoomJoinUrl: {
+    type: String,
+    default: null
+  },
+  zoomPassword: {
+    type: String,
+    default: null
   }
 }, {
   timestamps: true

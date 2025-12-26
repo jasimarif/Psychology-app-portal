@@ -1,6 +1,7 @@
 import Booking from '../models/Booking.js';
 import Psychologist from '../models/Psychologist.js';
 import emailCalendarService from '../services/emailCalendarService.js';
+import zoomService from '../services/zoomService.js';
 import { updateCompletedSessions } from '../utils/sessionCompletionService.js';
 import { formatDateOnly, formatShortDate, formatTime24to12 } from '../utils/timezone.js';
 
@@ -92,6 +93,20 @@ export const cancelBooking = async (req, res) => {
     booking.cancelledBy = 'psychologist';
     booking.cancelledAt = new Date();
     await booking.save();
+
+    // Delete Zoom meeting if exists
+    if (booking.zoomMeetingId) {
+      try {
+        const isZoomAvailable = await zoomService.isAvailable();
+        if (isZoomAvailable) {
+          await zoomService.deleteMeeting(booking.zoomMeetingId);
+          console.log(`Zoom meeting ${booking.zoomMeetingId} deleted for cancelled booking ${bookingId}`);
+        }
+      } catch (zoomError) {
+        console.error('Failed to delete Zoom meeting:', zoomError.message);
+        // Continue with cancellation even if Zoom deletion fails
+      }
+    }
 
     if (emailCalendarService.isAvailable()) {
       try {
