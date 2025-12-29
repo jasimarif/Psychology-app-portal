@@ -18,11 +18,13 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [profileComplete, setProfileComplete] = useState(false);
   const [checkingProfile, setCheckingProfile] = useState(false);
+  const [psychologistProfile, setPsychologistProfile] = useState(null);
 
   const checkProfileStatus = async (user) => {
     if (!user) {
       setProfileComplete(false);
       setCheckingProfile(false);
+      setPsychologistProfile(null);
       return;
     }
 
@@ -31,12 +33,15 @@ export const AuthProvider = ({ children }) => {
       const result = await psychologistService.getProfile(user.uid);
       if (result.success && result.data) {
         setProfileComplete(true);
+        setPsychologistProfile(result.data);
       } else {
         setProfileComplete(false);
+        setPsychologistProfile(null);
       }
     } catch (error) {
       console.log('Profile not found or error:', error.message);
       setProfileComplete(false);
+      setPsychologistProfile(null);
     } finally {
       setCheckingProfile(false);
     }
@@ -70,6 +75,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     profileComplete,
     checkingProfile,
+    psychologistProfile,
     refreshProfileStatus
   };
 

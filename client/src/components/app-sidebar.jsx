@@ -23,11 +23,11 @@ import {
 } from "@/components/ui/sidebar"
 
 // Psychologist portal data
-const getData = (currentUser, pathname) => ({
+const getData = (currentUser, pathname, psychologistProfile) => ({
   user: {
     name: currentUser?.displayName || "Psychologist",
     email: currentUser?.email || "psychologist@example.com",
-    avatar: currentUser?.photoURL || "/avatars/default.jpg",
+    avatar: psychologistProfile?.profileImage || currentUser?.photoURL || null,
   },
   teams: [
     {
@@ -67,10 +67,10 @@ const getData = (currentUser, pathname) => ({
 export function AppSidebar({
   ...props
 }) {
-  const { currentUser } = useAuth()
+  const { currentUser, psychologistProfile } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const data = getData(currentUser, location.pathname)
+  const data = getData(currentUser, location.pathname, psychologistProfile)
 
   const handleLogout = async () => {
     await logout()
