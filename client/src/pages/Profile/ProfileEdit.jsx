@@ -290,15 +290,11 @@ const ProfileEdit = () => {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white">
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white animate-in fade-in duration-300">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbPage>Edit Profile</BreadcrumbPage>
               </BreadcrumbItem>
@@ -306,7 +302,7 @@ const ProfileEdit = () => {
           </Breadcrumb>
         </header>
 
-        <div className="flex flex-1 flex-col gap-4 p-4 lg:p-8 bg-white min-h-[calc(100vh-4rem)]">
+        <div className="flex flex-1 flex-col gap-4 p-4 lg:p-8 bg-white min-h-[calc(100vh-4rem)] animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="mb-4">
             <div className="flex items-center justify-between mb-6">
               <div>
