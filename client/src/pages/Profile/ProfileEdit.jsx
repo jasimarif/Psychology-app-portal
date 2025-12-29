@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "@/context/AuthContext"
 import { psychologistService } from "@/services/psychologistService"
+import { logout } from "@/lib/firebase"
 import { AppSidebar } from "@/components/app-sidebar"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
@@ -13,6 +14,17 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -20,12 +32,12 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Plus, Upload, Camera } from "lucide-react"
+import { Plus, Upload, Camera, Trash2 } from "lucide-react"
 import { CloseIcon, ProfileIcon, BriefcaseIcon, GraduationIcon, GlobeIcon, StethoscopeIcon, TimeIcon } from "@/components/icons/DuoTuneIcons"
 
 const ProfileEdit = () => {
   const navigate = useNavigate()
-  const { currentUser } = useAuth()
+  const { currentUser, refreshProfileStatus } = useAuth()
   const fileInputRef = useRef(null)
   
   const [formData, setFormData] = useState({
@@ -42,7 +54,7 @@ const ProfileEdit = () => {
     education: [{ degree: "", institution: "", year: "" }],
     workExperience: [{ position: "", organization: "", duration: "", description: "" }],
     licenseNumber: "",
-    typicalHours: "Mon - Fri: 9:00 AM - 5:00 PM",
+    // typicalHours: "Mon - Fri: 9:00 AM - 5:00 PM",
     profileImage: null
   })
 
@@ -50,6 +62,7 @@ const ProfileEdit = () => {
   const [currentLanguage, setCurrentLanguage] = useState("")
   const [currentSpecialty, setCurrentSpecialty] = useState("")
   const [loading, setLoading] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState("")
   const [fetchingProfile, setFetchingProfile] = useState(true)
 
@@ -74,7 +87,7 @@ const ProfileEdit = () => {
             education: profile.education || [{ degree: "", institution: "", year: "" }],
             workExperience: profile.workExperience || [{ position: "", organization: "", duration: "", description: "" }],
             licenseNumber: profile.licenseNumber || "",
-            typicalHours: profile.typicalHours,
+            // typicalHours: profile.typicalHours,
             profileImage: null
           })
           if (profile.profileImage) {
@@ -208,6 +221,21 @@ const ProfileEdit = () => {
 
   const handleCancel = () => {
     navigate("/dashboard")
+  }
+
+  const handleDeleteProfile = async () => {
+    setDeleting(true)
+    setError("")
+
+    try {
+      await psychologistService.deleteProfile(currentUser.uid)
+      await logout()
+      navigate("/login")
+    } catch (err) {
+      setError(err.message || "Failed to delete profile. Please try again.")
+      setDeleting(false)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
   }
 
   if (fetchingProfile) {
@@ -670,9 +698,9 @@ const ProfileEdit = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-customGreen">
                   <TimeIcon className="w-5 h-5" />
-                  Pricing & Availability
+                  Pricing 
                 </CardTitle>
-                <CardDescription>Your session rates and typical working hours</CardDescription>
+                <CardDescription>Your session rates </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -694,28 +722,60 @@ const ProfileEdit = () => {
                   </div>
                   <p className="text-xs text-gray-500">Enter amount in USD (e.g., 150 for $150)</p>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="typicalHours">Typical Hours *</Label>
-                  <Input
-                    id="typicalHours"
-                    name="typicalHours"
-                    value={formData.typicalHours}
-                    onChange={handleInputChange}
-                    placeholder="Mon - Fri: 9:00 AM - 5:00 PM"
-                    required
-                    className="focus-visible:ring-customGreen"
-                  />
-                  <p className="text-xs text-gray-500">Example: Mon - Fri: 9:00 AM - 5:00 PM, Sat: 10:00 AM - 2:00 PM</p>
+              
+              </CardContent>
+            </Card>
+
+            {/* Danger Zone */}
+            <Card className="border-red-200 shadow-none border">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-red-600">
+                  <Trash2 className="w-5 h-5" />
+                  Danger Zone
+                </CardTitle>
+                <CardDescription>Irreversible actions for your profile</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between p-4 border border-red-200 rounded-lg bg-red-50/50">
+                  <div>
+                    <h4 className="font-medium text-gray-900">Delete Profile</h4>
+                    <p className="text-sm text-gray-600">Once you delete your profile, there is no going back. All your data will be permanently removed.</p>
+                  </div>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="destructive" className="ml-4 cursor-pointer" disabled={deleting}>
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        {deleting ? "Deleting..." : "Delete Profile"}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently delete your psychologist profile and remove all your data including bookings, availability settings, and client information from our servers.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction 
+                          onClick={handleDeleteProfile}
+                          className="bg-red-600 hover:bg-red-700"
+                        >
+                          Yes, delete my profile
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </CardContent>
             </Card>
 
             {/* Submit Buttons */}
             <div className="flex justify-end gap-4">
-              <Button type="button" variant="outline" onClick={handleCancel} disabled={loading} className="cursor-pointer">
+              <Button type="button" variant="outline" onClick={handleCancel} disabled={loading || deleting} className="cursor-pointer">
                 Cancel
               </Button>
-              <Button type="submit" className="bg-customGreen hover:bg-customGreenHover cursor-pointer" disabled={loading}>
+              <Button type="submit" className="bg-customGreen hover:bg-customGreenHover cursor-pointer" disabled={loading || deleting}>
                 {loading ? "Saving..." : "Save Changes"}
               </Button>
             </div>

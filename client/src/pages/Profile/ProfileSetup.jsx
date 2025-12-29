@@ -8,12 +8,11 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { X, Plus, Upload, Camera } from "lucide-react"
+import { Plus, Upload, Camera, X } from "lucide-react"
 
 const ProfileSetup = () => {
   const navigate = useNavigate()
-  const { currentUser } = useAuth()
+  const { currentUser, refreshProfileStatus } = useAuth()
   const fileInputRef = useRef(null)
   
   const [formData, setFormData] = useState({
@@ -30,13 +29,15 @@ const ProfileSetup = () => {
     education: [{ degree: "", institution: "", year: "" }],
     workExperience: [{ position: "", organization: "", duration: "", description: "" }],
     licenseNumber: "",
-    typicalHours: "Mon - Fri: 9:00 AM - 5:00 PM",
+    // typicalHours: "Mon - Fri: 9:00 AM - 5:00 PM",
     profileImage: null
   })
 
   const [imagePreview, setImagePreview] = useState(null)
   const [currentLanguage, setCurrentLanguage] = useState("")
   const [currentSpecialty, setCurrentSpecialty] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -135,9 +136,6 @@ const ProfileSetup = () => {
     }))
   }
 
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -145,20 +143,17 @@ const ProfileSetup = () => {
 
     try {
       await psychologistService.createProfile(formData, currentUser.uid)
-      // Redirect to availability setup after profile creation
-      navigate("/availability")
+      await refreshProfileStatus()
+      navigate("/dashboard")
     } catch (err) {
       setError(err.message || "Failed to create profile. Please try again.")
       setLoading(false)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
 
-  const handleSkip = () => {
-    navigate("/availability")
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-white py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Complete Your Profile</h1>
@@ -173,7 +168,7 @@ const ProfileSetup = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}
-          <Card>
+          <Card className='shadow-none'>
             <CardHeader>
               <CardTitle>Basic Information</CardTitle>
               <CardDescription>Your professional details that will be visible to clients</CardDescription>
@@ -309,7 +304,8 @@ const ProfileSetup = () => {
           </Card>
 
           {/* Specialties & Languages */}
-          <Card>
+                   <Card className='shadow-none'>
+
             <CardHeader>
               <CardTitle>Specialties & Languages</CardTitle>
               <CardDescription>Areas of expertise and languages you speak</CardDescription>
@@ -378,7 +374,8 @@ const ProfileSetup = () => {
           </Card>
 
           {/* Education */}
-          <Card>
+                  <Card className='shadow-none'>
+
             <CardHeader>
               <CardTitle>Education & Credentials</CardTitle>
               <CardDescription>Your educational background and professional credentials</CardDescription>
@@ -446,7 +443,8 @@ const ProfileSetup = () => {
           </Card>
 
           {/* Work Experience */}
-          <Card>
+               <Card className='shadow-none'>
+
             <CardHeader>
               <CardTitle>Work Experience</CardTitle>
               <CardDescription>Your professional work history</CardDescription>
@@ -512,10 +510,10 @@ const ProfileSetup = () => {
           </Card>
 
           {/* Pricing & Availability */}
-          <Card>
+          <Card className='shadow-none'>
             <CardHeader>
-              <CardTitle>Pricing & Availability</CardTitle>
-              <CardDescription>Your session rates and typical working hours</CardDescription>
+              <CardTitle>Pricing </CardTitle>
+              <CardDescription>Your session rates</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -537,7 +535,7 @@ const ProfileSetup = () => {
                 </div>
                 <p className="text-xs text-gray-500">Enter amount in USD (e.g., 150 for $150)</p>
               </div>
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label htmlFor="typicalHours">Typical Hours *</Label>
                 <Input
                   id="typicalHours"
@@ -548,15 +546,12 @@ const ProfileSetup = () => {
                   required
                 />
                 <p className="text-xs text-gray-500">Example: Mon - Fri: 9:00 AM - 5:00 PM, Sat: 10:00 AM - 2:00 PM</p>
-              </div>
+              </div> */}
             </CardContent>
           </Card>
 
           {/* Submit Buttons */}
           <div className="flex justify-end gap-4">
-            <Button type="button" variant="outline" onClick={handleSkip} disabled={loading}>
-              Skip for Now
-            </Button>
             <Button type="submit" className="bg-customGreen hover:bg-customGreenHover" disabled={loading}>
               {loading ? "Creating Profile..." : "Complete Profile"}
             </Button>

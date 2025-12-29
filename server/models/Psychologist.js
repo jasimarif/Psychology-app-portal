@@ -83,10 +83,10 @@ const psychologistSchema = new mongoose.Schema({
   licenseNumber: {
     type: String
   },
-  typicalHours: {
-    type: String,
-    required: true
-  },
+  // typicalHours: {
+  //   type: String,
+  //   required: true
+  // },
   availability: {
     timezone: {
       type: String,

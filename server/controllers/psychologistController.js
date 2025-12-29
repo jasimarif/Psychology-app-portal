@@ -19,7 +19,7 @@ export const createProfile = async (req, res) => {
       education,
       workExperience,
       licenseNumber,
-      typicalHours
+      // typicalHours
     } = req.body;
 
     console.log('Create profile request body:', req.body);
@@ -64,7 +64,7 @@ export const createProfile = async (req, res) => {
       education: parsedEducation,
       workExperience: parsedWorkExperience,
       licenseNumber,
-      typicalHours,
+      // typicalHours,
       profileImage: req.file ? req.file.path : null 
     };
 
@@ -131,7 +131,7 @@ export const updateProfile = async (req, res) => {
       education,
       workExperience,
       licenseNumber,
-      typicalHours,
+      // typicalHours,
       availability
     } = req.body;
 
@@ -190,7 +190,7 @@ export const updateProfile = async (req, res) => {
     psychologist.education = parsedEducation;
     psychologist.workExperience = parsedWorkExperience;
     psychologist.licenseNumber = licenseNumber || psychologist.licenseNumber;
-    psychologist.typicalHours = typicalHours || psychologist.typicalHours;
+    // psychologist.typicalHours = typicalHours || psychologist.typicalHours;
 
     // Update availability if provided
     if (availability) {

@@ -35,7 +35,7 @@ export const psychologistService = {
       data.append('education', JSON.stringify(formData.education));
       data.append('workExperience', JSON.stringify(formData.workExperience));
       data.append('licenseNumber', formData.licenseNumber || '');
-      data.append('typicalHours', formData.typicalHours);
+      // data.append('typicalHours', formData.typicalHours);
       
       // Append profile image if exists
       if (formData.profileImage) {
@@ -110,7 +110,7 @@ export const psychologistService = {
       if (formData.education) data.append('education', JSON.stringify(formData.education));
       if (formData.workExperience) data.append('workExperience', JSON.stringify(formData.workExperience));
       if (formData.licenseNumber !== undefined) data.append('licenseNumber', formData.licenseNumber || '');
-      if (formData.typicalHours) data.append('typicalHours', formData.typicalHours);
+      // if (formData.typicalHours) data.append('typicalHours', formData.typicalHours);
       if (formData.availability) data.append('availability', JSON.stringify(formData.availability));
       
       // Append profile image if exists and is a File object

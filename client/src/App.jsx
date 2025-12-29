@@ -5,8 +5,23 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import { useAuth } from "./context/AuthContext"
 
 function PublicRoute({ children }) {
-  const { currentUser } = useAuth()
-  return currentUser ? <Navigate to="/dashboard" replace /> : children
+  const { currentUser, profileComplete, checkingProfile } = useAuth()
+  
+  if (currentUser) {
+    if (checkingProfile) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading...</p>
+          </div>
+        </div>
+      )
+    }
+    return <Navigate to={profileComplete ? "/dashboard" : "/profile-setup"} replace />
+  }
+  
+  return children
 }
 
 function App() {
@@ -17,7 +32,7 @@ function App() {
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
           {/* <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} /> */}
-          <Route path="/profile-setup" element={<ProtectedRoute><ProfileSetup /></ProtectedRoute>} />
+          <Route path="/profile-setup" element={<ProtectedRoute requireProfile={false}><ProfileSetup /></ProtectedRoute>} />
           <Route path="/profile/edit" element={<ProtectedRoute><ProfileEdit /></ProtectedRoute>} />
           <Route path="/availability" element={<ProtectedRoute><AvailabilitySetup /></ProtectedRoute>} />
           <Route path="/bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} />
