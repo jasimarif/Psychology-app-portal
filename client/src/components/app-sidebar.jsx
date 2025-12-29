@@ -1,13 +1,8 @@
 "use client"
 
-import * as React from "react"
 import {
   DashboardIcon,
   BookingsIcon,
-  CalendarIcon,
-  UsersIcon,
-  MailIcon,
-  FileIcon,
   ProfileIcon,
   TimeIcon,
   PsychologistsIcon,
@@ -17,7 +12,6 @@ import { logout } from "@/lib/firebase"
 import { useNavigate } from "react-router-dom"
 
 import { NavMain } from "@/components/sidebar/nav-main"
-import { NavProjects } from "@/components/sidebar/nav-projects"
 import { NavUser } from "@/components/sidebar/nav-user"
 import { TeamSwitcher } from "@/components/sidebar/team-switcher"
 import {
@@ -56,102 +50,16 @@ const getData = (currentUser) => ({
       isActive: false,
     },
     {
-      title: "Appointments",
-      url: "#",
-      icon: CalendarIcon,
-      items: [
-        {
-          title: "Schedule",
-          url: "#",
-        },
-        {
-          title: "Upcoming",
-          url: "#",
-        },
-        {
-          title: "History",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Patients",
-      url: "#",
-      icon: UsersIcon,
-      items: [
-        {
-          title: "All Patients",
-          url: "#",
-        },
-        {
-          title: "Active Cases",
-          url: "#",
-        },
-        {
-          title: "Completed",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Messages",
-      url: "#",
-      icon: MailIcon,
-      items: [
-        {
-          title: "Inbox",
-          url: "#",
-        },
-        {
-          title: "Sent",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Reports",
-      url: "#",
-      icon: FileIcon,
-      items: [
-        {
-          title: "Session Notes",
-          url: "#",
-        },
-        {
-          title: "Progress Reports",
-          url: "#",
-        },
-        {
-          title: "Analytics",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
+      title: "Edit Profile",
+      url: "/profile/edit",
       icon: ProfileIcon,
-      items: [
-        {
-          title: "Edit Profile",
-          url: "/profile/edit",
-        },
-        {
-          title: "Availability",
-          url: "/availability",
-        },
-        {
-          title: "Preferences",
-          url: "#",
-        },
-      ],
+      isActive: false,
     },
-  ],
-  projects: [
     {
-      name: "Available Hours",
+      title: "Available Hours",
       url: "/availability",
       icon: TimeIcon,
+      isActive: false,
     },
   ],
 })
@@ -175,7 +83,6 @@ export function AppSidebar({
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} onLogout={handleLogout} />
