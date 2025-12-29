@@ -15,6 +15,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -44,6 +55,9 @@ const MyBookings = () => {
   const [psychologistId, setPsychologistId] = useState(null);
   const [filter, setFilter] = useState("all");
   const [actionLoading, setActionLoading] = useState(null);
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [selectedBookingId, setSelectedBookingId] = useState(null);
+  const [cancellationReason, setCancellationReason] = useState("");
 
   // Load psychologist profile to get ID
   useEffect(() => {
@@ -111,22 +125,32 @@ const MyBookings = () => {
     }
   };
 
-  const handleCancelBooking = async (bookingId) => {
-    const reason = prompt("Please provide a reason for cancellation:");
-    if (!reason) return;
+  const openCancelDialog = (bookingId) => {
+    setSelectedBookingId(bookingId);
+    setCancellationReason("");
+    setCancelDialogOpen(true);
+  };
+
+  const handleCancelBooking = async () => {
+    if (!cancellationReason.trim()) {
+      return;
+    }
 
     try {
-      setActionLoading(bookingId);
+      setActionLoading(selectedBookingId);
       const token = await currentUser.getIdToken();
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/bookings/${bookingId}/cancel`,
+        `${import.meta.env.VITE_API_URL}/api/bookings/${selectedBookingId}/cancel`,
         {
           method: 'PATCH',
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ reason })
+          body: JSON.stringify({ 
+            reason: cancellationReason,
+            cancelledBy: 'psychologist'
+          })
         }
       );
 
@@ -138,11 +162,21 @@ const MyBookings = () => {
 
       // Update local state
       setBookings(prev => prev.map(b =>
-        b._id === bookingId ? { ...b, status: 'cancelled', cancellationReason: reason } : b
+        b._id === selectedBookingId ? { 
+          ...b, 
+          status: 'cancelled', 
+          cancellationReason: cancellationReason,
+          cancelledBy: 'psychologist'
+        } : b
       ));
+      
+      // Close dialog and reset state
+      setCancelDialogOpen(false);
+      setSelectedBookingId(null);
+      setCancellationReason("");
     } catch (err) {
       console.error('Error cancelling booking:', err);
-      alert(err.message);
+      setError(err.message);
     } finally {
       setActionLoading(null);
     }
@@ -367,7 +401,6 @@ const MyBookings = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Bookings</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
                 <SelectItem value="confirmed">Confirmed</SelectItem>
                 <SelectItem value="completed">Completed</SelectItem>
                 <SelectItem value="cancelled">Cancelled</SelectItem>
@@ -481,6 +514,44 @@ const MyBookings = () => {
                           </div>
                         </div>
 
+                        {/* Zoom Link - Only show for confirmed status */}
+                        {booking.zoomJoinUrl && booking.status === 'confirmed' && (
+                          <div className="p-4 bg-blue-50 rounded-xl border border-blue-200 mb-4">
+                            <div className="flex items-start gap-3">
+                              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-0">
+                                <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M15.75 2.25H8.25C7.00736 2.25 6 3.25736 6 4.5V19.5C6 20.7426 7.00736 21.75 8.25 21.75H15.75C16.9926 21.75 18 20.7426 18 19.5V4.5C18 3.25736 16.9926 2.25 15.75 2.25Z" />
+                                  <path d="M9 6.75H15M9 9.75H15M9 12.75H15" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+                                </svg>
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-xs text-blue-600 font-semibold mb-1 uppercase tracking-wide">Video Session</p>
+                                <p className="text-sm text-gray-700 mb-3">
+                                  Join your session via Zoom when it's time
+                                </p>
+                                {booking.zoomPassword && (
+                                  <p className="text-xs text-gray-600 mb-2">
+                                    <span className="font-semibold">Meeting ID:</span> {booking.zoomMeetingId}
+                                    <span className="mx-2">|</span>
+                                    <span className="font-semibold">Password:</span> {booking.zoomPassword}
+                                  </p>
+                                )}
+                                <a
+                                  href={booking.zoomJoinUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+                                >
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                  </svg>
+                                  Join Zoom Meeting
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
                         {/* Notes */}
                         {booking.notes && (
                           <div className="p-4 bg-blue-50 rounded-xl mb-4">
@@ -499,7 +570,7 @@ const MyBookings = () => {
                               {booking.cancellationReason}
                             </p>
                             <p className="text-xs text-red-500 mt-1">
-                              Cancelled by: {booking.cancelledBy || 'N/A'}
+                              Cancelled by: {booking.cancelledBy === 'psychologist' ? 'Psychologist' : booking.cancelledBy === 'client' ? 'Client' : 'N/A'}
                             </p>
                           </div>
                         )}
@@ -511,11 +582,11 @@ const MyBookings = () => {
                           <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-2">Actions</p>
 
                           <div className="space-y-3">
-                            {(booking.status === 'confirmed' || booking.status === 'pending') && (
+                            {(booking.status === 'confirmed') && (
                               <Button
                                 variant="outline"
                                 className="w-full justify-start rounded-xl border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-all cursor-pointer"
-                                onClick={() => handleCancelBooking(booking._id)}
+                                onClick={() => openCancelDialog(booking._id)}
                                 disabled={actionLoading === booking._id}
                               >
                                 <CloseIcon className="w-4 h-4 mr-2" />
@@ -547,6 +618,49 @@ const MyBookings = () => {
           )}
         </div>
       </SidebarInset>
+
+      {/* Cancel Booking Dialog */}
+      <AlertDialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
+        <AlertDialogContent className="rounded-3xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-2xl font-bold text-gray-900">
+              Cancel Booking
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-600">
+              Please provide a reason for cancelling this booking. The client will be notified of the cancellation.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          
+          <div className="py-4">
+            <Textarea
+              placeholder="Enter your reason for cancellation..."
+              value={cancellationReason}
+              onChange={(e) => setCancellationReason(e.target.value)}
+              className="min-h-[120px] rounded-xl resize-none"
+            />
+          </div>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel 
+              onClick={() => {
+                setCancelDialogOpen(false);
+                setSelectedBookingId(null);
+                setCancellationReason("");
+              }}
+              className="rounded-xl"
+            >
+              Keep Booking
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleCancelBooking}
+              disabled={!cancellationReason.trim() || actionLoading === selectedBookingId}
+              className="bg-red-600 hover:bg-red-700 rounded-xl"
+            >
+              {actionLoading === selectedBookingId ? "Cancelling..." : "Cancel Booking"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </SidebarProvider>
   );
 };
