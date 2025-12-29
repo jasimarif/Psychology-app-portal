@@ -34,7 +34,7 @@ import {
   ArrowRightIcon,
   UsersIcon
 } from "@/components/icons/DuoTuneIcons";
-import { Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const MyBookings = () => {
   const { currentUser } = useAuth();
@@ -200,13 +200,62 @@ const MyBookings = () => {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-            <div className="text-center">
-              <div className="relative">
-                <div className="w-20 h-20 border-4 border-customGreen/20 border-t-customGreen rounded-full animate-spin mx-auto mb-6"></div>
-                <CalendarIcon className="w-8 h-8 text-customGreen absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>My Bookings</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </header>
+          <div className="flex flex-1 flex-col gap-4 p-4 lg:p-8 bg-white min-h-[calc(100vh-4rem)]">
+            <div className="mb-4">
+              <div className="flex items-center gap-3 mb-2">
+                <Skeleton className="w-8 h-8 rounded" />
+                <Skeleton className="h-10 w-64" />
               </div>
-              <p className="text-gray-600 font-medium">Loading bookings...</p>
+              <Skeleton className="h-6 w-96 mt-2" />
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+              {[...Array(5)].map((_, i) => (
+                <Card key={i} className="rounded-2xl border-0 shadow-none">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="w-10 h-10 rounded-xl" />
+                      <div className="flex-1">
+                        <Skeleton className="h-6 w-12 mb-1" />
+                        <Skeleton className="h-4 w-16" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            <div className="space-y-4">
+              {[...Array(3)].map((_, i) => (
+                <Card key={i} className="rounded-2xl border-0 shadow-none">
+                  <CardContent className="p-6">
+                    <div className="flex flex-col lg:flex-row gap-6">
+                      <Skeleton className="w-20 h-20 rounded-full" />
+                      <div className="flex-1 space-y-3">
+                        <Skeleton className="h-6 w-48" />
+                        <Skeleton className="h-4 w-32" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <Skeleton className="h-5 w-full" />
+                          <Skeleton className="h-5 w-full" />
+                        </div>
+                      </div>
+                      <div className="flex lg:flex-col gap-2">
+                        <Skeleton className="h-10 w-24" />
+                        <Skeleton className="h-10 w-24" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </SidebarInset>

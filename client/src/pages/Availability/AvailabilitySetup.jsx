@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Plus } from "lucide-react";
 import { CalendarIcon, TimeIcon, CloseIcon } from "@/components/icons/DuoTuneIcons";
 import { formatTime24to12 } from "@/lib/timezone";
@@ -205,11 +206,53 @@ const AvailabilitySetup = () => {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-customGreen mx-auto mb-4"></div>
-              <p className="text-gray-600">Loading availability settings...</p>
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Availability Settings</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </header>
+          <div className="flex flex-1 flex-col gap-4 p-4 lg:p-8 bg-white min-h-[calc(100vh-4rem)]">
+            <div className="mb-4">
+              <div className="flex items-center gap-3 mb-2">
+                <Skeleton className="w-8 h-8 rounded" />
+                <Skeleton className="h-10 w-64" />
+              </div>
+              <Skeleton className="h-6 w-96 mt-2" />
             </div>
+            <Card className="rounded-2xl border-none shadow-none">
+              <CardContent className="p-6 space-y-6">
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+                <div className="space-y-4">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="p-4  rounded-lg space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Skeleton className="h-6 w-24" />
+                        <Skeleton className="h-10 w-10 rounded" />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex gap-4">
+                          <Skeleton className="h-10 flex-1" />
+                          <Skeleton className="h-10 flex-1" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-between pt-4">
+                  <Skeleton className="h-10 w-32" />
+                  <Skeleton className="h-10 w-32" />
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </SidebarInset>
       </SidebarProvider>

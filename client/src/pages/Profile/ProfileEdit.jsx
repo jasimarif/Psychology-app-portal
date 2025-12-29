@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Plus, Upload, Camera } from "lucide-react"
 import { CloseIcon, ProfileIcon, BriefcaseIcon, GraduationIcon, GlobeIcon, StethoscopeIcon, TimeIcon } from "@/components/icons/DuoTuneIcons"
 
@@ -214,11 +215,43 @@ const ProfileEdit = () => {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <div className="flex items-center justify-center min-h-screen">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-customGreen mx-auto mb-4"></div>
-              <p className="text-gray-600">Loading profile...</p>
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Edit Profile</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </header>
+          <div className="flex flex-1 flex-col gap-4 p-4 lg:p-8">
+            <div className="flex items-center gap-3 mb-2">
+              <Skeleton className="w-8 h-8 rounded" />
+              <Skeleton className="h-10 w-48" />
             </div>
+            <Skeleton className="h-6 w-96 mb-6" />
+            <Card className="rounded-2xl border-none shadow-none">
+              <CardContent className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {[...Array(8)].map((_, i) => (
+                    <div key={i} className="space-y-2">
+                      <Skeleton className="h-4 w-24" />
+                      <Skeleton className="h-10 w-full" />
+                    </div>
+                  ))}
+                </div>
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-24 w-full" />
+                </div>
+                <div className="flex justify-end gap-3 pt-4">
+                  <Skeleton className="h-10 w-24" />
+                  <Skeleton className="h-10 w-32" />
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </SidebarInset>
       </SidebarProvider>
