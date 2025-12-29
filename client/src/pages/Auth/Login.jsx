@@ -71,8 +71,8 @@ function Login() {
               >
                 <FieldGroup className="gap-4">
                   <div className="flex flex-col items-center gap-2 text-center">
-                    <h1 className="text-3xl md:text-4xl font-bold text-customGreenHover">Welcome back</h1>
-                    <p className="text-gray-500 text-balance text-base md:text-lg">
+                    <h1 className="text-3xl md:text-4xl font-bold text-customGreenHover select-none ">Welcome back</h1>
+                    <p className="text-gray-500 text-balance text-base md:text-lg select-none">
                       Sign in to your psychologist account
                     </p>
                   </div>
@@ -111,7 +111,7 @@ function Login() {
                     />
                   </Field>
                   <Field>
-                    <Button type="submit" className="bg-customGreen hover:bg-customGreenHover cursor-pointer shadow-none h-12 text-base mt-5" disabled={loading}>
+                    <Button type="submit" className="bg-customGreen hover:bg-customGreenHover cursor-pointer shadow-none h-12 text-base mt-5 select-none" disabled={loading}>
                       {loading ? (
                         <>
                           Signing in
