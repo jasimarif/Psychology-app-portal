@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { Loader2 } from "lucide-react"
 import {
   Field,
   FieldDescription,
@@ -110,11 +111,18 @@ function Login() {
                     />
                   </Field>
                   <Field>
-                    <Button type="submit" className="bg-teal-800 hover:bg-teal-900 cursor-pointer shadow-none h-12 text-base" disabled={loading}>
-                      {loading ? "Signing in..." : "Login"}
+                    <Button type="submit" className="bg-teal-800 hover:bg-teal-900 cursor-pointer shadow-none h-12 text-base mt-5" disabled={loading}>
+                      {loading ? (
+                        <>
+                          Signing in
+                          <Loader2 className="ml-2 h-5 w-5 animate-spin" />
+                        </>
+                      ) : (
+                        "Login"
+                      )}
                     </Button>
                   </Field>
-                  <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card text-base">
+                  {/* <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card text-base">
                     Or continue with
                   </FieldSeparator>
                   <Field>
@@ -138,7 +146,7 @@ function Login() {
                   </Field>
                   <FieldDescription className="text-center text-base">
                     Don&apos;t have an account? <Link to="/signup" className="text-teal-900 hover:underline font-medium">Sign up</Link>
-                  </FieldDescription>
+                  </FieldDescription> */}
                 </FieldGroup>
               </form>
               <div
@@ -148,7 +156,7 @@ function Login() {
                 style={{ transitionDelay: '200ms' }}
               >
                 <img
-                  src="./login.png"
+                  src="./signup.png"
                   alt="Psychologist portal"
                   className="absolute inset-0 h-full w-full object-cover md:object-contain lg:object-cover dark:brightness-[0.2] dark:grayscale" />
               </div>

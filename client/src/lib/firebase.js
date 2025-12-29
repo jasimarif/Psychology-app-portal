@@ -7,7 +7,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   updateProfile,
-  onAuthStateChanged
+  onAuthStateChanged,
+  sendPasswordResetEmail
 } from 'firebase/auth';
 
 
@@ -59,6 +60,15 @@ export const signInWithGoogle = async () => {
 export const logout = async () => {
   try {
     await signOut(auth);
+    return { error: null };
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
+export const resetPassword = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
     return { error: null };
   } catch (error) {
     return { error: error.message };
