@@ -243,7 +243,7 @@ const ProfileEdit = () => {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 select-none">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
@@ -290,7 +290,7 @@ const ProfileEdit = () => {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white animate-in fade-in duration-300">
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white animate-in fade-in duration-300 select-none">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
@@ -304,7 +304,7 @@ const ProfileEdit = () => {
 
         <div className="flex flex-1 flex-col gap-4 p-4 lg:p-8 bg-white min-h-[calc(100vh-4rem)] animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="mb-4">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-6 select-none">
               <div>
                 <div className="flex items-center gap-3 mb-2">
                   <ProfileIcon className="w-8 h-8 text-customGreenHover" />
@@ -329,7 +329,7 @@ const ProfileEdit = () => {
             {/* Basic Information */}
             <Card className="border-customGreen/10 shadow-none border">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-customGreen">
+                <CardTitle className="flex items-center gap-2 text-customGreen select-none">
                 <ProfileIcon className="w-5 h-5" />
                   Basic Information
                 </CardTitle>
@@ -366,11 +366,11 @@ const ProfileEdit = () => {
                         onChange={handleImageChange}
                         className="hidden"
                       />
-                      <Button type="button" variant="outline" onClick={handleImageClick} className="border-customGreen/20 hover:bg-customGreen/5 text-customGreen">
+                      <Button type="button" variant="outline" onClick={handleImageClick} className="border-customGreen/20 hover:bg-customGreen/5 text-customGreen select-none">
                         <Upload className="w-4 h-4 mr-2" />
                         {imagePreview ? "Change Photo" : "Upload Photo"}
                       </Button>
-                      <p className="text-xs text-gray-500">JPG, PNG or GIF (max. 5MB)</p>
+                      <p className="text-xs text-gray-500 select-none">JPG, PNG or GIF (max. 5MB)</p>
                     </div>
                   </div>
                 </div>
@@ -469,7 +469,7 @@ const ProfileEdit = () => {
             {/* Specialties & Languages */}
             <Card className="border-customGreen/10 shadow-none border">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-customGreen">
+                <CardTitle className="flex items-center gap-2 text-customGreen select-none">
                   <StethoscopeIcon className="w-5 h-5" />
                   Specialties & Languages
                 </CardTitle>
@@ -543,7 +543,7 @@ const ProfileEdit = () => {
             {/* Education */}
             <Card className="border-customGreen/10 shadow-none border">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-customGreen">
+                <CardTitle className="flex items-center gap-2 text-customGreen select-none">
                   <GraduationIcon className="w-5 h-5" />
                   Education & Credentials
                 </CardTitle>
@@ -618,7 +618,7 @@ const ProfileEdit = () => {
             {/* Work Experience */}
             <Card className="border-customGreen/10 shadow-none border">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-customGreen">
+                <CardTitle className="flex items-center gap-2 text-customGreen select-none">
                   <BriefcaseIcon className="w-5 h-5" />
                   Work Experience
                 </CardTitle>
@@ -692,7 +692,7 @@ const ProfileEdit = () => {
             {/* Pricing & Availability */}
             <Card className="border-customGreen/10 shadow-none border">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-customGreen">
+                <CardTitle className="flex items-center gap-2 text-customGreen select-none">
                   <TimeIcon className="w-5 h-5" />
                   Pricing 
                 </CardTitle>
@@ -725,7 +725,7 @@ const ProfileEdit = () => {
             {/* Danger Zone */}
             <Card className="border-red-200 shadow-none border">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-red-600">
+                <CardTitle className="flex items-center gap-2 text-red-600 select-none">
                   <Trash2 className="w-5 h-5" />
                   Danger Zone
                 </CardTitle>

@@ -46,6 +46,7 @@ import {
   UsersIcon
 } from "@/components/icons/DuoTuneIcons";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Loader2 } from "lucide-react";
 
 const MyBookings = () => {
   const { currentUser } = useAuth();
@@ -203,7 +204,7 @@ const MyBookings = () => {
 
     const variant = variants[status] || variants.confirmed;
     return (
-      <Badge className={`${variant.className} border font-medium gap-1.5 px-3 py-1`}>
+      <Badge className={`${variant.className} border font-medium gap-1.5 px-3 py-1 select-none`}>
         {variant.icon}
         {variant.label}
       </Badge>
@@ -234,7 +235,7 @@ const MyBookings = () => {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white">
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white select-none">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
@@ -301,7 +302,7 @@ const MyBookings = () => {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white animate-in fade-in duration-300">
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white animate-in fade-in duration-300 select-none">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
@@ -316,7 +317,7 @@ const MyBookings = () => {
         <div className="flex flex-1 flex-col gap-4 p-4 lg:p-8 bg-white min-h-[calc(100vh-4rem)] animate-in fade-in slide-in-from-bottom-4 duration-500">
           {/* Header Section */}
           <div className="mb-4">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-6 select-none">
               <div>
                 <div className="flex items-center gap-3 mb-2">
                   <CalendarIcon className="w-8 h-8 text-customGreenHover" />
@@ -334,7 +335,7 @@ const MyBookings = () => {
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
               <Card className="rounded-2xl border-0 shadow-none bg-lightGreen/50">
                 <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 select-none">
                     <div className="w-10 h-10 rounded-xl bg-lightGreen/95 flex items-center justify-center">
                       <StatsIcon className="w-5 h-5 text-customGreen" />
                     </div>
@@ -348,7 +349,7 @@ const MyBookings = () => {
 
               <Card className="rounded-2xl border-0 shadow-none bg-emerald-50">
                 <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 select-none">
                     <div className="w-10 h-10 rounded-xl bg-emerald-200/50 flex items-center justify-center">
                       <CheckIcon className="w-5 h-5 text-emerald-700" />
                     </div>
@@ -362,7 +363,7 @@ const MyBookings = () => {
 
               <Card className="rounded-2xl border-0 shadow-none bg-blue-50">
                 <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 select-none">
                     <div className="w-10 h-10 rounded-xl bg-blue-200/50 flex items-center justify-center">
                       <CheckIcon className="w-5 h-5 text-blue-700" />
                     </div>
@@ -376,7 +377,7 @@ const MyBookings = () => {
 
               <Card className="rounded-2xl border-0 shadow-none bg-red-50">
                 <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 select-none">
                     <div className="w-10 h-10 rounded-xl bg-red-200/50 flex items-center justify-center">
                       <CloseIcon className="w-5 h-5 text-red-700" />
                     </div>
@@ -391,8 +392,8 @@ const MyBookings = () => {
           </div>
 
           {/* Filter Dropdown */}
-          <div className="mb-6 flex items-center gap-3">
-            <label htmlFor="booking-filter" className="text-sm font-medium text-gray-500">
+          <div className="mb-6 flex items-center gap-3 select-none">
+            <label htmlFor="booking-filter" className="text-sm font-medium text-gray-500 ">
               Filter by:
             </label>
             <Select value={filter} onValueChange={setFilter}>
@@ -516,7 +517,7 @@ const MyBookings = () => {
 
                         {/* Zoom Link - Only show for confirmed status */}
                         {booking.zoomJoinUrl && booking.status === 'confirmed' && (
-                          <div className="p-4 bg-blue-50 rounded-xl border border-blue-200 mb-4">
+                          <div className="p-4 bg-blue-100/60 rounded-xl  mb-4">
                             <div className="flex items-start gap-3">
                               <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-0">
                                 <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
@@ -540,7 +541,7 @@ const MyBookings = () => {
                                   href={booking.zoomJoinUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+                                  className="inline-flex items-center select-none gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
                                 >
                                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -564,7 +565,7 @@ const MyBookings = () => {
 
                         {/* Cancellation Reason */}
                         {booking.status === 'cancelled' && booking.cancellationReason && (
-                          <div className="p-4 bg-red-50 rounded-xl">
+                          <div className="p-4 bg-red-100/50 rounded-xl">
                             <p className="text-xs text-red-600 font-semibold mb-1 uppercase tracking-wide">Cancellation Reason</p>
                             <p className="text-sm text-red-700 leading-relaxed">
                               {booking.cancellationReason}
@@ -585,7 +586,7 @@ const MyBookings = () => {
                             {(booking.status === 'confirmed') && (
                               <Button
                                 variant="outline"
-                                className="w-full justify-start rounded-xl border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-all cursor-pointer"
+                                className="w-full justify-start rounded-xl select-none border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-all cursor-pointer"
                                 onClick={() => openCancelDialog(booking._id)}
                                 disabled={actionLoading === booking._id}
                               >
@@ -621,7 +622,7 @@ const MyBookings = () => {
 
       {/* Cancel Booking Dialog */}
       <AlertDialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
-        <AlertDialogContent className="rounded-3xl">
+        <AlertDialogContent className="rounded-3xl select-none">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-2xl font-bold text-gray-700">
               Cancel Booking
@@ -636,7 +637,7 @@ const MyBookings = () => {
               placeholder="Enter your reason for cancellation..."
               value={cancellationReason}
               onChange={(e) => setCancellationReason(e.target.value)}
-              className="min-h-[120px] rounded-xl resize-none"
+              className="min-h-[120px] rounded-xl resize-none ring-0"
             />
           </div>
 
@@ -647,16 +648,21 @@ const MyBookings = () => {
                 setSelectedBookingId(null);
                 setCancellationReason("");
               }}
-              className="rounded-xl"
+              className="rounded-xl select-none cursor-pointer"
             >
               Keep Booking
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleCancelBooking}
               disabled={!cancellationReason.trim() || actionLoading === selectedBookingId}
-              className="bg-red-600 hover:bg-red-700 rounded-xl"
+              className="bg-red-600 hover:bg-red-700 rounded-xl select-none cursor-pointer"
             >
-              {actionLoading === selectedBookingId ? "Cancelling..." : "Cancel Booking"}
+              {actionLoading === selectedBookingId ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Cancelling
+                </>
+              ) : "Cancel Booking"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
