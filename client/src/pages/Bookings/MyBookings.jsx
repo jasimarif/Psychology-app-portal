@@ -324,7 +324,7 @@ const MyBookings = () => {
                     Session Bookings
                   </h1>
                 </div>
-                <p className="text-gray-600 text-lg">
+                <p className="text-gray-500 text-lg">
                   Manage your therapy sessions and appointments
                 </p>
               </div>
@@ -336,11 +336,11 @@ const MyBookings = () => {
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-lightGreen/95 flex items-center justify-center">
-                      <StatsIcon className="w-5 h-5 text-gray-700" />
+                      <StatsIcon className="w-5 h-5 text-customGreen" />
                     </div>
                     <div>
-                      <p className="text-xl font-bold text-gray-900">{stats.total}</p>
-                      <p className="text-xs text-gray-600">Total</p>
+                      <p className="text-xl font-bold text-gray-700">{stats.total}</p>
+                      <p className="text-xs text-gray-500">Total</p>
                     </div>
                   </div>
                 </CardContent>
@@ -392,7 +392,7 @@ const MyBookings = () => {
 
           {/* Filter Dropdown */}
           <div className="mb-6 flex items-center gap-3">
-            <label htmlFor="booking-filter" className="text-sm font-medium text-gray-700">
+            <label htmlFor="booking-filter" className="text-sm font-medium text-gray-500">
               Filter by:
             </label>
             <Select value={filter} onValueChange={setFilter}>
@@ -431,10 +431,10 @@ const MyBookings = () => {
                   <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <CalendarIcon className="w-12 h-12 text-gray-400" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                  <h3 className="text-2xl font-bold text-gray-700 mb-3">
                     {filter === "all" ? "No bookings yet" : `No ${filter} bookings`}
                   </h3>
-                  <p className="text-gray-600 mb-8 max-w-md mx-auto">
+                  <p className="text-gray-500 mb-8 max-w-md mx-auto">
                     {filter === "all"
                       ? "You don't have any bookings yet."
                       : `You don't have any ${filter} bookings at the moment`}
@@ -462,10 +462,10 @@ const MyBookings = () => {
                           <div className="flex-1">
                             <div className="flex items-start justify-between mb-2">
                               <div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-customGreen transition-colors">
+                                <h3 className="text-xl font-bold text-gray-700 mb-1 group-hover:text-customGreen transition-colors">
                                   {booking.userName || booking.userEmail || `Client ID: ${booking.userId}`}
                                 </h3>
-                                <p className="text-sm text-gray-600 flex items-center gap-1">
+                                <p className="text-sm text-gray-500 flex items-center gap-1">
                                   <BriefcaseIcon className="w-3.5 h-3.5" />
                                   Booking ID: {booking._id.slice(-8)}
                                 </p>
@@ -483,7 +483,7 @@ const MyBookings = () => {
                             </div>
                             <div>
                               <p className="text-xs text-gray-500 font-medium">Date</p>
-                              <p className="text-sm font-semibold text-gray-900">
+                              <p className="text-sm font-semibold text-gray-700">
                                 {formatDate(booking.appointmentDate)}
                               </p>
                             </div>
@@ -495,7 +495,7 @@ const MyBookings = () => {
                             </div>
                             <div>
                               <p className="text-xs text-gray-500 font-medium">Time</p>
-                              <p className="text-sm font-semibold text-gray-900">
+                              <p className="text-sm font-semibold text-gray-700">
                                 {formatTime24to12(booking.startTime)} - {formatTime24to12(booking.endTime)}
                               </p>
                             </div>
@@ -507,7 +507,7 @@ const MyBookings = () => {
                             </div>
                             <div>
                               <p className="text-xs text-gray-500 font-medium">Session Fee</p>
-                              <p className="text-lg font-bold text-customGreen">
+                              <p className="text-lg font-bold text-gray-700">
                                 ${booking.price}
                               </p>
                             </div>
@@ -530,7 +530,7 @@ const MyBookings = () => {
                                   Join your session via Zoom when it's time
                                 </p>
                                 {booking.zoomPassword && (
-                                  <p className="text-xs text-gray-600 mb-2">
+                                  <p className="text-xs text-gray-500 mb-2">
                                     <span className="font-semibold">Meeting ID:</span> {booking.zoomMeetingId}
                                     <span className="mx-2">|</span>
                                     <span className="font-semibold">Password:</span> {booking.zoomPassword}
@@ -623,10 +623,10 @@ const MyBookings = () => {
       <AlertDialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
         <AlertDialogContent className="rounded-3xl">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-2xl font-bold text-gray-900">
+            <AlertDialogTitle className="text-2xl font-bold text-gray-700">
               Cancel Booking
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-gray-600">
+            <AlertDialogDescription className="text-gray-500">
               Please provide a reason for cancelling this booking. The client will be notified of the cancellation.
             </AlertDialogDescription>
           </AlertDialogHeader>

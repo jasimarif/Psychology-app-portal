@@ -38,7 +38,7 @@ function Dashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-600">
+                <p className="text-gray-500">
                   This is your psychologist portal dashboard. More features coming soon!
                 </p>
               </CardContent>

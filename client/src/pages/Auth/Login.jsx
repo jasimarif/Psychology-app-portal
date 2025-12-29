@@ -72,7 +72,7 @@ function Login() {
                 <FieldGroup className="gap-4">
                   <div className="flex flex-col items-center gap-2 text-center">
                     <h1 className="text-3xl md:text-4xl font-bold text-customGreenHover">Welcome back</h1>
-                    <p className="text-muted-foreground text-balance text-base md:text-lg">
+                    <p className="text-gray-500 text-balance text-base md:text-lg">
                       Sign in to your psychologist account
                     </p>
                   </div>
@@ -82,7 +82,7 @@ function Login() {
                     </div>
                   )}
                   <Field>
-                    <FieldLabel htmlFor="email" className="text-gray-800 text-base">Email</FieldLabel>
+                    <FieldLabel htmlFor="email" className="text-gray-700 text-base">Email</FieldLabel>
                     <Input
                       id="email"
                       type="email"
@@ -95,8 +95,8 @@ function Login() {
                   </Field>
                   <Field>
                     <div className="flex items-center">
-                      <FieldLabel htmlFor="password" className="text-gray-800 text-base">Password</FieldLabel>
-                      <Link to="/forgot-password" className="ml-auto text-base underline-offset-2 hover:underline text-teal-900">
+                      <FieldLabel htmlFor="password" className="text-gray-700 text-base">Password</FieldLabel>
+                      <Link to="/forgot-password" className="ml-auto text-base underline-offset-2 hover:underline text-customGreen">
                         Forgot your password?
                       </Link>
                     </div>
@@ -111,7 +111,7 @@ function Login() {
                     />
                   </Field>
                   <Field>
-                    <Button type="submit" className="bg-teal-800 hover:bg-teal-900 cursor-pointer shadow-none h-12 text-base mt-5" disabled={loading}>
+                    <Button type="submit" className="bg-customGreen hover:bg-customGreenHover cursor-pointer shadow-none h-12 text-base mt-5" disabled={loading}>
                       {loading ? (
                         <>
                           Signing in

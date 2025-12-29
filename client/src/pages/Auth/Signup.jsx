@@ -97,7 +97,7 @@ function Signup() {
                 <FieldGroup className="gap-4">
                   <div className="flex flex-col items-center gap-2 text-center">
                     <h1 className="text-3xl md:text-4xl font-bold text-customGreenHover">Create an account</h1>
-                    <p className="text-muted-foreground text-balance text-base md:text-lg">
+                    <p className="text-gray-500 text-balance text-base md:text-lg">
                       Register as a psychologist
                     </p>
                   </div>
@@ -107,7 +107,7 @@ function Signup() {
                     </div>
                   )}
                   <Field>
-                    <FieldLabel htmlFor="name" className="text-gray-800 text-base">Full Name</FieldLabel>
+                    <FieldLabel htmlFor="name" className="text-gray-700 text-base">Full Name</FieldLabel>
                     <Input
                       id="name"
                       name="name"
@@ -120,7 +120,7 @@ function Signup() {
                     />
                   </Field>
                   <Field>
-                    <FieldLabel htmlFor="email" className="text-gray-800 text-base">Email</FieldLabel>
+                    <FieldLabel htmlFor="email" className="text-gray-700 text-base">Email</FieldLabel>
                     <Input
                       id="email"
                       name="email"
@@ -133,7 +133,7 @@ function Signup() {
                     />
                   </Field>
                   <Field>
-                    <FieldLabel htmlFor="password" className="text-gray-800 text-base">Password</FieldLabel>
+                    <FieldLabel htmlFor="password" className="text-gray-700 text-base">Password</FieldLabel>
                     <Input
                       id="password"
                       name="password"
@@ -146,7 +146,7 @@ function Signup() {
                     />
                   </Field>
                   <Field>
-                    <FieldLabel htmlFor="confirmPassword" className="text-gray-800 text-base">Confirm Password</FieldLabel>
+                    <FieldLabel htmlFor="confirmPassword" className="text-gray-700 text-base">Confirm Password</FieldLabel>
                     <Input
                       id="confirmPassword"
                       name="confirmPassword"
@@ -159,7 +159,7 @@ function Signup() {
                     />
                   </Field>
                   <Field>
-                    <Button type="submit" className="bg-teal-800 hover:bg-teal-900 cursor-pointer h-12 text-base" disabled={loading}>
+                    <Button type="submit" className="bg-customGreen hover:bg-customGreenHover cursor-pointer h-12 text-base" disabled={loading}>
                       {loading ? "Creating account..." : "Create account"}
                     </Button>
                   </Field>
@@ -185,8 +185,8 @@ function Signup() {
                       Continue with Google
                     </Button>
                   </Field>
-                  <FieldDescription className="text-center text-base">
-                    Already have an account? <Link to="/login" className="text-teal-900 hover:underline font-medium">Sign in</Link>
+                  <FieldDescription className="text-center text-base text-gray-500">
+                    Already have an account? <Link to="/login" className="text-customGreen hover:underline font-medium">Sign in</Link>
                   </FieldDescription>
 
                 </FieldGroup>

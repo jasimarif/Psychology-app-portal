@@ -156,8 +156,8 @@ const ProfileSetup = () => {
     <div className="min-h-screen bg-white py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Complete Your Profile</h1>
-          <p className="text-gray-600">Help clients get to know you better by completing your professional profile</p>
+          <h1 className="text-3xl font-bold text-customGreen mb-2">Complete Your Profile</h1>
+          <p className="text-gray-500">Help clients get to know you better by completing your professional profile</p>
         </div>
 
         {error && (
@@ -168,10 +168,10 @@ const ProfileSetup = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}
-          <Card className='shadow-none'>
+          <Card className='shadow-none border border-customGreen/10'>
             <CardHeader>
-              <CardTitle>Basic Information</CardTitle>
-              <CardDescription>Your professional details that will be visible to clients</CardDescription>
+              <CardTitle className="text-customGreen">Basic Information</CardTitle>
+              <CardDescription className="text-gray-500">Your professional details that will be visible to clients</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Profile Picture */}
@@ -179,7 +179,7 @@ const ProfileSetup = () => {
                 <Label>Profile Picture</Label>
                 <div className="flex items-center gap-4">
                   <div className="relative">
-                    <div className="w-24 h-24 rounded-full border-2 border-gray-200 overflow-hidden bg-gray-100 flex items-center justify-center">
+                    <div className="w-24 h-24 rounded-full border-2 border-customGreen/20 overflow-hidden bg-gray-100 flex items-center justify-center">
                       {imagePreview ? (
                         <img src={imagePreview} alt="Profile" className="w-full h-full object-cover" />
                       ) : (
@@ -204,7 +204,7 @@ const ProfileSetup = () => {
                       onChange={handleImageChange}
                       className="hidden"
                     />
-                    <Button type="button" variant="outline" onClick={handleImageClick}>
+                    <Button type="button" variant="outline" onClick={handleImageClick} className="border-customGreen/20 hover:bg-customGreen/5 text-customGreen">
                       <Upload className="w-4 h-4 mr-2" />
                       {imagePreview ? "Change Photo" : "Upload Photo"}
                     </Button>
@@ -304,11 +304,11 @@ const ProfileSetup = () => {
           </Card>
 
           {/* Specialties & Languages */}
-                   <Card className='shadow-none'>
+                   <Card className='shadow-none border border-customGreen/10'>
 
             <CardHeader>
-              <CardTitle>Specialties & Languages</CardTitle>
-              <CardDescription>Areas of expertise and languages you speak</CardDescription>
+              <CardTitle className="text-customGreen">Specialties & Languages</CardTitle>
+              <CardDescription className="text-gray-500">Areas of expertise and languages you speak</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -374,17 +374,17 @@ const ProfileSetup = () => {
           </Card>
 
           {/* Education */}
-                  <Card className='shadow-none'>
+                  <Card className='shadow-none border border-customGreen/10'>
 
             <CardHeader>
-              <CardTitle>Education & Credentials</CardTitle>
-              <CardDescription>Your educational background and professional credentials</CardDescription>
+              <CardTitle className="text-customGreen">Education & Credentials</CardTitle>
+              <CardDescription className="text-gray-500">Your educational background and professional credentials</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {formData.education.map((edu, index) => (
-                <div key={index} className="p-4 border rounded-lg space-y-4">
+                <div key={index} className="p-4 border border-customGreen/10 rounded-lg space-y-4 bg-customGreen/5">
                   <div className="flex justify-between items-center">
-                    <h4 className="font-medium">Education {index + 1}</h4>
+                    <h4 className="font-medium text-gray-700">Education {index + 1}</h4>
                     {formData.education.length > 1 && (
                       <Button
                         type="button"
@@ -443,17 +443,17 @@ const ProfileSetup = () => {
           </Card>
 
           {/* Work Experience */}
-               <Card className='shadow-none'>
+               <Card className='shadow-none border border-customGreen/10'>
 
             <CardHeader>
-              <CardTitle>Work Experience</CardTitle>
-              <CardDescription>Your professional work history</CardDescription>
+              <CardTitle className="text-customGreen">Work Experience</CardTitle>
+              <CardDescription className="text-gray-500">Your professional work history</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {formData.workExperience.map((exp, index) => (
-                <div key={index} className="p-4 border rounded-lg space-y-4">
+                <div key={index} className="p-4 border border-customGreen/10 rounded-lg space-y-4 bg-customGreen/5">
                   <div className="flex justify-between items-center">
-                    <h4 className="font-medium">Experience {index + 1}</h4>
+                    <h4 className="font-medium text-gray-700">Experience {index + 1}</h4>
                     {formData.workExperience.length > 1 && (
                       <Button
                         type="button"
@@ -510,10 +510,10 @@ const ProfileSetup = () => {
           </Card>
 
           {/* Pricing & Availability */}
-          <Card className='shadow-none'>
+          <Card className='shadow-none border border-customGreen/10'>
             <CardHeader>
-              <CardTitle>Pricing </CardTitle>
-              <CardDescription>Your session rates</CardDescription>
+              <CardTitle className="text-customGreen">Pricing </CardTitle>
+              <CardDescription className="text-gray-500">Your session rates</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">

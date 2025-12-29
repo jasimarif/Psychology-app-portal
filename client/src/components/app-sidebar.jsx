@@ -9,7 +9,7 @@ import {
 } from "@/components/icons/DuoTuneIcons"
 import { useAuth } from "@/context/AuthContext"
 import { logout } from "@/lib/firebase"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 
 import { NavMain } from "@/components/sidebar/nav-main"
 import { NavUser } from "@/components/sidebar/nav-user"
@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/sidebar"
 
 // Psychologist portal data
-const getData = (currentUser) => ({
+const getData = (currentUser, pathname) => ({
   user: {
     name: currentUser?.displayName || "Psychologist",
     email: currentUser?.email || "psychologist@example.com",
@@ -41,25 +41,25 @@ const getData = (currentUser) => ({
       title: "Dashboard",
       url: "/dashboard",
       icon: DashboardIcon,
-      isActive: true,
+      isActive: pathname === "/dashboard",
     },
     {
       title: "Bookings",
       url: "/bookings",
       icon: BookingsIcon,
-      isActive: false,
+      isActive: pathname === "/bookings",
     },
     {
       title: "Edit Profile",
       url: "/profile/edit",
       icon: ProfileIcon,
-      isActive: false,
+      isActive: pathname === "/profile/edit",
     },
     {
       title: "Available Hours",
       url: "/availability",
       icon: TimeIcon,
-      isActive: false,
+      isActive: pathname === "/availability",
     },
   ],
 })
@@ -69,7 +69,8 @@ export function AppSidebar({
 }) {
   const { currentUser } = useAuth()
   const navigate = useNavigate()
-  const data = getData(currentUser)
+  const location = useLocation()
+  const data = getData(currentUser, location.pathname)
 
   const handleLogout = async () => {
     await logout()

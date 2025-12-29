@@ -316,7 +316,7 @@ const ProfileEdit = () => {
                     Edit Your Profile
                   </h1>
                 </div>
-                <p className="text-gray-600 text-lg">
+                <p className="text-gray-500 text-lg">
                   Update your professional information
                 </p>
               </div>
@@ -557,7 +557,7 @@ const ProfileEdit = () => {
                 {formData.education.map((edu, index) => (
                   <div key={index} className="p-4 border border-customGreen/10 rounded-lg space-y-4 bg-customGreen/5">
                     <div className="flex justify-between items-center">
-                      <h4 className="font-medium text-gray-900">Education {index + 1}</h4>
+                      <h4 className="font-medium text-gray-700">Education {index + 1}</h4>
                       {formData.education.length > 1 && (
                         <Button
                           type="button"
@@ -632,7 +632,7 @@ const ProfileEdit = () => {
                 {formData.workExperience.map((exp, index) => (
                   <div key={index} className="p-4 border border-customGreen/10 rounded-lg space-y-4 bg-customGreen/5">
                     <div className="flex justify-between items-center">
-                      <h4 className="font-medium text-gray-900">Experience {index + 1}</h4>
+                      <h4 className="font-medium text-gray-700">Experience {index + 1}</h4>
                       {formData.workExperience.length > 1 && (
                         <Button
                           type="button"
@@ -738,8 +738,8 @@ const ProfileEdit = () => {
               <CardContent>
                 <div className="flex items-center justify-between p-4 border border-red-200 rounded-lg bg-red-50/50">
                   <div>
-                    <h4 className="font-medium text-gray-900">Delete Profile</h4>
-                    <p className="text-sm text-gray-600">Once you delete your profile, there is no going back. All your data will be permanently removed.</p>
+                    <h4 className="font-medium text-gray-700">Delete Profile</h4>
+                    <p className="text-sm text-gray-500">Once you delete your profile, there is no going back. All your data will be permanently removed.</p>
                   </div>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>

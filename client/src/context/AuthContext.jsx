@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { auth, onAuthStateChanged } from '@/lib/firebase';
 import { psychologistService } from '@/services/psychologistService';
-import { Loader2 } from 'lucide-react';
+import { BriefcaseIcon } from '@/components/icons/DuoTuneIcons';
 
 const AuthContext = createContext();
 
@@ -75,10 +75,12 @@ export const AuthProvider = ({ children }) => {
 
   if (loading || checkingProfile) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-customGreen/5 via-white to-customGreen/5">
         <div className="text-center">
-          <Loader2 lassName="animate-spin bg-customGreen h-12 w-12 mx-auto"/>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <BriefcaseIcon className="h-16 w-16 mx-auto text-customGreen animate-pulse" style={{
+            animation: 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+          }}/>
+          <p className="mt-4 text-customGreen text-xl font-bold font-nunito">Please wait</p>
         </div>
       </div>
     );

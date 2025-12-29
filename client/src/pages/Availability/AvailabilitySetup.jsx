@@ -284,7 +284,7 @@ const AvailabilitySetup = () => {
                     Set Your Availability
                   </h1>
                 </div>
-                <p className="text-gray-600 text-lg">
+                <p className="text-gray-500 text-lg">
                   Configure your weekly schedule and session preferences
                 </p>
               </div>
@@ -311,20 +311,20 @@ const AvailabilitySetup = () => {
                 <TimeIcon className="w-5 h-5" />
                 Current Availability
               </CardTitle>
-              <CardDescription className="text-gray-600">
+              <CardDescription className="text-gray-500">
                 Your configured schedule that clients can see
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="mb-4">
                 <div className="bg-white p-3 rounded-md border border-customGreen/10">
-                  <p className="text-xs font-semibold text-gray-600 uppercase mb-1">Session Duration</p>
-                  <p className="text-lg font-bold text-gray-900">{availability.sessionDuration} minutes</p>
+                  <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Session Duration</p>
+                  <p className="text-lg font-bold text-gray-700">{availability.sessionDuration} minutes</p>
                 </div>
               </div>
 
               <div className="bg-white p-4 rounded-md border border-customGreen/10">
-                <p className="text-xs font-semibold text-gray-600 uppercase mb-3">Weekly Schedule</p>
+                <p className="text-xs font-semibold text-gray-500 uppercase mb-3">Weekly Schedule</p>
                 <div className="space-y-2">
                   {availability.schedule
                     .sort((a, b) => a.dayOfWeek - b.dayOfWeek)
@@ -334,13 +334,13 @@ const AvailabilitySetup = () => {
 
                       return (
                         <div key={index} className="flex items-start gap-3 pb-2 border-b last:border-b-0">
-                          <div className="w-24 font-semibold text-gray-900 text-sm pt-1">
+                          <div className="w-24 font-semibold text-gray-700 text-sm pt-1">
                             {dayName}
                           </div>
                           <div className="flex-1 space-y-1">
                             {activeSlots.length > 0 ? (
                               activeSlots.map((slot, slotIdx) => (
-                                <div key={slotIdx} className="flex items-center gap-2 text-sm text-gray-700">
+                                <div key={slotIdx} className="flex items-center gap-2 text-sm text-gray-500">
                                   <TimeIcon className="w-3 h-3 text-customGreen" />
                                   <span>{formatTime24to12(slot.startTime)} - {formatTime24to12(slot.endTime)}</span>
                                 </div>
@@ -451,7 +451,7 @@ const AvailabilitySetup = () => {
                             onCheckedChange={(checked) => updateTimeSlot(dayIndex, slotIndex, 'isActive', checked)}
                             className="data-[state=checked]:bg-customGreen"
                           />
-                          <span className="text-sm text-gray-600">Active</span>
+                          <span className="text-sm text-gray-500">Active</span>
                         </div>
                         {day.slots.length > 1 && (
                           <Button

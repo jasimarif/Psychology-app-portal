@@ -57,7 +57,7 @@ function ForgotPassword() {
             <FieldGroup className="gap-4">
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-3xl md:text-4xl font-bold text-customGreenHover">Reset Password</h1>
-                <p className="text-muted-foreground text-balance text-base md:text-lg">
+                <p className="text-gray-500 text-balance text-base md:text-lg">
                   Enter your email address and we'll send you a link to reset your password
                 </p>
               </div>
@@ -72,7 +72,7 @@ function ForgotPassword() {
                 </div>
               )}
               <Field>
-                <FieldLabel htmlFor="email" className="text-gray-800 text-base">Email</FieldLabel>
+                <FieldLabel htmlFor="email" className="text-gray-700 text-base">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
@@ -84,7 +84,7 @@ function ForgotPassword() {
                 />
               </Field>
               <Field>
-                <Button type="submit" className="bg-teal-800 hover:bg-teal-900 cursor-pointer shadow-none h-12 text-base mt-5" disabled={loading}>
+                <Button type="submit" className="bg-customGreen hover:bg-customGreenHover cursor-pointer shadow-none h-12 text-base mt-5" disabled={loading}>
                   {loading ? (
                     <>
                       Sending reset link
@@ -95,8 +95,8 @@ function ForgotPassword() {
                   )}
                 </Button>
               </Field>
-              <FieldDescription className="text-center text-base">
-                Remember your password? <Link to="/login" className="text-teal-900 hover:underline font-medium">Back to login</Link>
+              <FieldDescription className="text-center text-base text-gray-500">
+                Remember your password? <Link to="/login" className="text-customGreen hover:underline font-medium">Back to login</Link>
               </FieldDescription>
             </FieldGroup>
           </form>

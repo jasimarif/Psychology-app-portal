@@ -56,10 +56,10 @@ export function NavUser({
                 <AvatarFallback className="rounded-lg">{getInitials(user.name)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-medium text-gray-500">{user.name}</span>
+                <span className="truncate text-xs text-gray-400">{user.email}</span>
               </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              <ChevronsUpDown className="ml-auto size-4 text-gray-500" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -74,15 +74,15 @@ export function NavUser({
                   <AvatarFallback className="rounded-lg">{getInitials(user.name)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-medium text-gray-700">{user.name}</span>
+                  <span className="truncate text-xs text-gray-500">{user.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
             </DropdownMenuGroup>
-            <DropdownMenuItem onClick={onLogout} className='cursor-pointer'>
+            <DropdownMenuItem onClick={onLogout} className='cursor-pointer text-gray-700'>
               <LogOut />
               Log out
             </DropdownMenuItem>
