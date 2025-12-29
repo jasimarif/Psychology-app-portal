@@ -117,6 +117,9 @@ export const psychologistService = {
       if (formData.profileImage instanceof File) {
         console.log('Appending profile image to FormData');
         data.append('profileImage', formData.profileImage);
+      } else if (formData.deleteProfileImage === true) {
+        console.log('Marking profile image for deletion');
+        data.append('deleteProfileImage', 'true');
       } else {
         console.log('No new profile image to upload');
       }

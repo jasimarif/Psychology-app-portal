@@ -59,6 +59,7 @@ const ProfileEdit = () => {
   })
 
   const [imagePreview, setImagePreview] = useState(null)
+  const [deleteImage, setDeleteImage] = useState(false)
   const [currentLanguage, setCurrentLanguage] = useState("")
   const [currentSpecialty, setCurrentSpecialty] = useState("")
   const [loading, setLoading] = useState(false)
@@ -116,6 +117,7 @@ const ProfileEdit = () => {
     const file = e.target.files[0]
     if (file) {
       setFormData(prev => ({ ...prev, profileImage: file }))
+      setDeleteImage(false) // Reset delete flag when new image is selected
       const reader = new FileReader()
       reader.onloadend = () => {
         setImagePreview(reader.result)
@@ -131,6 +133,7 @@ const ProfileEdit = () => {
   const handleRemoveImage = () => {
     setFormData(prev => ({ ...prev, profileImage: null }))
     setImagePreview(null)
+    setDeleteImage(true)
     if (fileInputRef.current) {
       fileInputRef.current.value = ""
     }
@@ -210,7 +213,7 @@ const ProfileEdit = () => {
     setError("")
 
     try {
-      await psychologistService.updateProfile(formData, currentUser.uid)
+      await psychologistService.updateProfile({ ...formData, deleteProfileImage: deleteImage }, currentUser.uid)
       navigate("/dashboard")
     } catch (err) {
       setError(err.message || "Failed to update profile. Please try again.")
