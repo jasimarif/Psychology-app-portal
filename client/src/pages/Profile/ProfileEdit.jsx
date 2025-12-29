@@ -32,7 +32,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Plus, Upload, Camera, Trash2 } from "lucide-react"
+import { Plus, Upload, Camera, Trash2, Loader2 } from "lucide-react"
 import { CloseIcon, ProfileIcon, BriefcaseIcon, GraduationIcon, GlobeIcon, StethoscopeIcon, TimeIcon } from "@/components/icons/DuoTuneIcons"
 
 const ProfileEdit = () => {
@@ -117,7 +117,7 @@ const ProfileEdit = () => {
     const file = e.target.files[0]
     if (file) {
       setFormData(prev => ({ ...prev, profileImage: file }))
-      setDeleteImage(false) // Reset delete flag when new image is selected
+      setDeleteImage(false) 
       const reader = new FileReader()
       reader.onloadend = () => {
         setImagePreview(reader.result)
@@ -214,7 +214,7 @@ const ProfileEdit = () => {
 
     try {
       await psychologistService.updateProfile({ ...formData, deleteProfileImage: deleteImage }, currentUser.uid)
-      navigate("/dashboard")
+      setLoading(false)
     } catch (err) {
       setError(err.message || "Failed to update profile. Please try again.")
       setLoading(false)
@@ -222,26 +222,21 @@ const ProfileEdit = () => {
     }
   }
 
-  const handleCancel = () => {
-    navigate("/dashboard")
-  }
+
 
   const handleDeleteProfile = async () => {
     setDeleting(true)
     setError("")
 
     try {
-      // First delete the profile data from the backend
       await psychologistService.deleteProfile(currentUser.uid)
 
-      // Then delete the Firebase user account
       const { error: deleteError } = await deleteUserAccount()
 
       if (deleteError) {
         throw new Error(deleteError)
       }
 
-      // Navigate to login page after successful deletion
       navigate("/login")
     } catch (err) {
       setError(err.message || "Failed to delete profile. Please try again.")
@@ -345,7 +340,7 @@ const ProfileEdit = () => {
                 <ProfileIcon className="w-5 h-5" />
                   Basic Information
                 </CardTitle>
-                <CardDescription>Your professional details that will be visible to clients</CardDescription>
+                <CardDescription className='select-none'>Your professional details that will be visible to clients</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Profile Picture */}
@@ -485,7 +480,7 @@ const ProfileEdit = () => {
                   <StethoscopeIcon className="w-5 h-5" />
                   Specialties & Languages
                 </CardTitle>
-                <CardDescription>Areas of expertise and languages you speak</CardDescription>
+                <CardDescription className='select-none'>Areas of expertise and languages you speak</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -559,7 +554,7 @@ const ProfileEdit = () => {
                   <GraduationIcon className="w-5 h-5" />
                   Education & Credentials
                 </CardTitle>
-                <CardDescription>Your educational background and professional credentials</CardDescription>
+                <CardDescription className='select-none'>Your educational background and professional credentials</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {formData.education.map((edu, index) => (
@@ -609,7 +604,7 @@ const ProfileEdit = () => {
                     </div>
                   </div>
                 ))}
-                <Button type="button" variant="outline" onClick={addEducation} className="w-full border-dashed border-2 hover:border-customGreen hover:text-customGreen">
+                <Button type="button" variant="outline" onClick={addEducation} className="w-full border-dashed border-2 hover:border-customGreen hover:text-customGreen cursor-pointer select-none">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Education
                 </Button>
@@ -634,7 +629,7 @@ const ProfileEdit = () => {
                   <BriefcaseIcon className="w-5 h-5" />
                   Work Experience
                 </CardTitle>
-                <CardDescription>Your professional work history</CardDescription>
+                <CardDescription className='select-none'>Your professional work history</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {formData.workExperience.map((exp, index) => (
@@ -694,7 +689,7 @@ const ProfileEdit = () => {
                     </div>
                   </div>
                 ))}
-                <Button type="button" variant="outline" onClick={addWorkExperience} className="w-full border-dashed border-2 hover:border-customGreen hover:text-customGreen">
+                <Button type="button" variant="outline" onClick={addWorkExperience} className="w-full border-dashed border-2 hover:border-customGreen hover:text-customGreen cursor-pointer select-none">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Work Experience
                 </Button>
@@ -708,7 +703,7 @@ const ProfileEdit = () => {
                   <TimeIcon className="w-5 h-5" />
                   Pricing 
                 </CardTitle>
-                <CardDescription>Your session rates </CardDescription>
+                <CardDescription className='select-none'>Your session rates </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -735,19 +730,19 @@ const ProfileEdit = () => {
             </Card>
 
             {/* Danger Zone */}
-            <Card className="border-red-200 shadow-none border">
+            <Card className="shadow-none border-none bg-red-100/70">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-red-600 select-none">
                   <Trash2 className="w-5 h-5" />
                   Danger Zone
                 </CardTitle>
-                <CardDescription>Irreversible actions for your profile</CardDescription>
+               <CardDescription className='select-none text-red-500'>Irreversible actions for your profile</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between p-4 border border-red-200 rounded-lg bg-red-50/50">
+                <div className="flex items-center justify-between p-4  rounded-lg bg-red-100">
                   <div>
-                    <h4 className="font-medium text-gray-700">Delete Profile</h4>
-                    <p className="text-sm text-gray-500">Once you delete your profile, there is no going back. All your data will be permanently removed.</p>
+                    <h4 className="font-medium text-red-600">Delete Profile</h4>
+                    <p className="text-sm text-red-500">Once you delete your profile, there is no going back. All your data will be permanently removed.</p>
                   </div>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
@@ -756,7 +751,7 @@ const ProfileEdit = () => {
                         {deleting ? "Deleting..." : "Delete Profile"}
                       </Button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent>
+                    <AlertDialogContent className='select-none'>
                       <AlertDialogHeader>
                         <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                         <AlertDialogDescription>
@@ -764,10 +759,10 @@ const ProfileEdit = () => {
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel className='cursor-pointer'>Cancel</AlertDialogCancel>
                         <AlertDialogAction 
                           onClick={handleDeleteProfile}
-                          className="bg-red-600 hover:bg-red-700"
+                          className="bg-red-600 hover:bg-red-700 cursor-pointer select-none"
                         >
                           Yes, delete my profile
                         </AlertDialogAction>
@@ -780,11 +775,16 @@ const ProfileEdit = () => {
 
             {/* Submit Buttons */}
             <div className="flex justify-end gap-4">
-              <Button type="button" variant="outline" onClick={handleCancel} disabled={loading || deleting} className="cursor-pointer">
-                Cancel
-              </Button>
-              <Button type="submit" className="bg-customGreen hover:bg-customGreenHover cursor-pointer" disabled={loading || deleting}>
-                {loading ? "Saving..." : "Save Changes"}
+        
+              <Button type="submit" className="bg-customGreen hover:bg-customGreenHover cursor-pointer select-none" disabled={loading || deleting}>
+                {loading ? (
+                  <>
+                    Saving
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  </>
+                ) : (
+                  "Save Changes"
+                )}
               </Button>
             </div>
           </form>
