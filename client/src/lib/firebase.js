@@ -8,7 +8,8 @@ import {
   signInWithPopup,
   updateProfile,
   onAuthStateChanged,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  deleteUser
 } from 'firebase/auth';
 
 
@@ -27,7 +28,6 @@ export const auth = getAuth(app);
 
 const googleProvider = new GoogleAuthProvider();
 
-// Helper function to convert Firebase error codes to user-friendly messages
 const getFirebaseErrorMessage = (errorCode) => {
   const errorMessages = {
     'auth/invalid-credential': 'Invalid email or password. Please check your credentials and try again.',
@@ -89,6 +89,19 @@ export const logout = async () => {
 export const resetPassword = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
+    return { error: null };
+  } catch (error) {
+    return { error: getFirebaseErrorMessage(error.code) };
+  }
+};
+
+export const deleteUserAccount = async () => {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error('No user is currently signed in');
+    }
+    await deleteUser(user);
     return { error: null };
   } catch (error) {
     return { error: getFirebaseErrorMessage(error.code) };

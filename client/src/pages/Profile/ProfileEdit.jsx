@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "@/context/AuthContext"
 import { psychologistService } from "@/services/psychologistService"
-import { logout } from "@/lib/firebase"
+import { deleteUserAccount } from "@/lib/firebase"
 import { AppSidebar } from "@/components/app-sidebar"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
@@ -228,8 +228,17 @@ const ProfileEdit = () => {
     setError("")
 
     try {
+      // First delete the profile data from the backend
       await psychologistService.deleteProfile(currentUser.uid)
-      await logout()
+
+      // Then delete the Firebase user account
+      const { error: deleteError } = await deleteUserAccount()
+
+      if (deleteError) {
+        throw new Error(deleteError)
+      }
+
+      // Navigate to login page after successful deletion
       navigate("/login")
     } catch (err) {
       setError(err.message || "Failed to delete profile. Please try again.")
