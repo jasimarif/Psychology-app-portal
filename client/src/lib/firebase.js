@@ -27,6 +27,26 @@ export const auth = getAuth(app);
 
 const googleProvider = new GoogleAuthProvider();
 
+// Helper function to convert Firebase error codes to user-friendly messages
+const getFirebaseErrorMessage = (errorCode) => {
+  const errorMessages = {
+    'auth/invalid-credential': 'Invalid email or password. Please check your credentials and try again.',
+    'auth/user-not-found': 'No account found with this email address.',
+    'auth/wrong-password': 'Incorrect password. Please try again.',
+    'auth/email-already-in-use': 'An account with this email already exists.',
+    'auth/weak-password': 'Password is too weak. Please use a stronger password.',
+    'auth/invalid-email': 'Invalid email address format.',
+    'auth/user-disabled': 'This account has been disabled. Please contact support.',
+    'auth/too-many-requests': 'Too many failed login attempts. Please try again later.',
+    'auth/network-request-failed': 'Network error. Please check your connection and try again.',
+    'auth/operation-not-allowed': 'This operation is not allowed. Please contact support.',
+    'auth/popup-closed-by-user': 'Sign-in popup was closed before completion.',
+    'auth/cancelled-popup-request': 'Sign-in was cancelled.',
+  };
+
+  return errorMessages[errorCode] || 'An unexpected error occurred. Please try again.';
+};
+
 export const registerWithEmailAndPassword = async (email, password, name) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -35,7 +55,7 @@ export const registerWithEmailAndPassword = async (email, password, name) => {
     });
     return { user: userCredential.user, error: null };
   } catch (error) {
-    return { user: null, error: error.message };
+    return { user: null, error: getFirebaseErrorMessage(error.code) };
   }
 };
 
@@ -44,7 +64,7 @@ export const loginWithEmailAndPassword = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return { user: userCredential.user, error: null };
   } catch (error) {
-    return { user: null, error: error.message };
+    return { user: null, error: getFirebaseErrorMessage(error.code) };
   }
 };
 
@@ -53,7 +73,7 @@ export const signInWithGoogle = async () => {
     const result = await signInWithPopup(auth, googleProvider);
     return { user: result.user, error: null };
   } catch (error) {
-    return { user: null, error: error.message };
+    return { user: null, error: getFirebaseErrorMessage(error.code) };
   }
 };
 
@@ -62,7 +82,7 @@ export const logout = async () => {
     await signOut(auth);
     return { error: null };
   } catch (error) {
-    return { error: error.message };
+    return { error: getFirebaseErrorMessage(error.code) };
   }
 };
 
@@ -71,7 +91,7 @@ export const resetPassword = async (email) => {
     await sendPasswordResetEmail(auth, email);
     return { error: null };
   } catch (error) {
-    return { error: error.message };
+    return { error: getFirebaseErrorMessage(error.code) };
   }
 };
 
