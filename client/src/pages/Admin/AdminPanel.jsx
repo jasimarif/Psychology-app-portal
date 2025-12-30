@@ -44,6 +44,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Eye, ShieldCheck, Phone, Mail, GraduationCap, Languages, Loader2, LogOut } from "lucide-react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import AdminLogin from "./AdminLogin";
 
 const AdminPanel = () => {
@@ -61,13 +70,21 @@ const AdminPanel = () => {
   // Filters
   const [bookingFilter, setBookingFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  
+
+  // Pagination state for each tab
+  const [psychologistsPage, setPsychologistsPage] = useState(1);
+  const [psychologistsLimit, setPsychologistsLimit] = useState(10);
+  const [usersPage, setUsersPage] = useState(1);
+  const [usersLimit, setUsersLimit] = useState(10);
+  const [bookingsPage, setBookingsPage] = useState(1);
+  const [bookingsLimit, setBookingsLimit] = useState(10);
+
   // User bookings dialog
   const [selectedUser, setSelectedUser] = useState(null);
   const [userBookings, setUserBookings] = useState([]);
   const [userBookingsLoading, setUserBookingsLoading] = useState(false);
   const [userDialogOpen, setUserDialogOpen] = useState(false);
-  
+
   // Psychologist expanded state
   const [expandedPsychologist, setExpandedPsychologist] = useState(null);
   const [statusLoading, setStatusLoading] = useState(null);
@@ -122,16 +139,16 @@ const AdminPanel = () => {
 
   useEffect(() => {
     if (!isAdminAuthenticated || checkingAuth) return;
-    
+
     const loadData = async () => {
       if (!currentUser?.uid) return;
       setLoading(true);
       setError("");
-      
+
       try {
         const token = await currentUser.getIdToken();
         let endpoint = '';
-        
+
         switch (activeTab) {
           case 'psychologists':
             endpoint = '/api/admin/psychologists';
@@ -180,6 +197,19 @@ const AdminPanel = () => {
 
     loadData();
   }, [activeTab, currentUser, isAdminAuthenticated, checkingAuth]);
+
+  // Reset to page 1 when search term or filters change
+  useEffect(() => {
+    setPsychologistsPage(1);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    setUsersPage(1);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    setBookingsPage(1);
+  }, [searchTerm, bookingFilter]);
 
   const handleAdminLogin = () => {
     setIsAdminAuthenticated(true);
@@ -306,20 +336,20 @@ const AdminPanel = () => {
 
   const getFilteredBookings = () => {
     let filtered = bookings;
-    
+
     if (bookingFilter !== "all") {
       filtered = filtered.filter(b => b.status === bookingFilter);
     }
-    
+
     if (searchTerm) {
       const search = searchTerm.toLowerCase();
-      filtered = filtered.filter(b => 
+      filtered = filtered.filter(b =>
         b.userName?.toLowerCase().includes(search) ||
         b.userEmail?.toLowerCase().includes(search) ||
         b.psychologistId?.name?.toLowerCase().includes(search)
       );
     }
-    
+
     return filtered;
   };
 
@@ -340,6 +370,76 @@ const AdminPanel = () => {
       u.userName?.toLowerCase().includes(search) ||
       u.userEmail?.toLowerCase().includes(search)
     );
+  };
+
+  // Pagination helper functions
+  const getPaginatedData = (data, page, limit) => {
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    return data.slice(startIndex, endIndex);
+  };
+
+  const getTotalPages = (totalItems, limit) => {
+    return Math.ceil(totalItems / limit);
+  };
+
+  const handlePageChange = (tab, newPage) => {
+    switch (tab) {
+      case 'psychologists':
+        setPsychologistsPage(newPage);
+        break;
+      case 'users':
+        setUsersPage(newPage);
+        break;
+      case 'bookings':
+        setBookingsPage(newPage);
+        break;
+    }
+  };
+
+  const handleLimitChange = (tab, newLimit) => {
+    switch (tab) {
+      case 'psychologists':
+        setPsychologistsLimit(Number(newLimit));
+        setPsychologistsPage(1);
+        break;
+      case 'users':
+        setUsersLimit(Number(newLimit));
+        setUsersPage(1);
+        break;
+      case 'bookings':
+        setBookingsLimit(Number(newLimit));
+        setBookingsPage(1);
+        break;
+    }
+  };
+
+  // Get paginated data for each tab
+  const getPaginatedPsychologists = () => {
+    const filtered = getFilteredPsychologists();
+    return {
+      data: getPaginatedData(filtered, psychologistsPage, psychologistsLimit),
+      total: filtered.length,
+      totalPages: getTotalPages(filtered.length, psychologistsLimit)
+    };
+  };
+
+  const getPaginatedUsers = () => {
+    const filtered = getFilteredUsers();
+    return {
+      data: getPaginatedData(filtered, usersPage, usersLimit),
+      total: filtered.length,
+      totalPages: getTotalPages(filtered.length, usersLimit)
+    };
+  };
+
+  const getPaginatedBookings = () => {
+    const filtered = getFilteredBookings();
+    return {
+      data: getPaginatedData(filtered, bookingsPage, bookingsLimit),
+      total: filtered.length,
+      totalPages: getTotalPages(filtered.length, bookingsLimit)
+    };
   };
 
   const LoadingSkeleton = () => (
@@ -363,6 +463,101 @@ const AdminPanel = () => {
       ))}
     </div>
   );
+
+  // Pagination component
+  const PaginationControls = ({ currentPage, totalPages, onPageChange, currentLimit, onLimitChange, totalItems }) => {
+    const getPageNumbers = () => {
+      const pages = [];
+      const maxVisible = 5;
+
+      if (totalPages <= maxVisible) {
+        for (let i = 1; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        if (currentPage <= 3) {
+          for (let i = 1; i <= 4; i++) pages.push(i);
+          pages.push('ellipsis');
+          pages.push(totalPages);
+        } else if (currentPage >= totalPages - 2) {
+          pages.push(1);
+          pages.push('ellipsis');
+          for (let i = totalPages - 3; i <= totalPages; i++) pages.push(i);
+        } else {
+          pages.push(1);
+          pages.push('ellipsis');
+          pages.push(currentPage - 1);
+          pages.push(currentPage);
+          pages.push(currentPage + 1);
+          pages.push('ellipsis');
+          pages.push(totalPages);
+        }
+      }
+
+      return pages;
+    };
+
+    if (totalPages === 0) return null;
+
+    return (
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <span>Show</span>
+          <Select value={String(currentLimit)} onValueChange={onLimitChange}>
+            <SelectTrigger className="w-20 h-9 rounded-lg">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="5">5</SelectItem>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="20">20</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+              <SelectItem value="100">100</SelectItem>
+            </SelectContent>
+          </Select>
+          <span>of {totalItems} items</span>
+        </div>
+
+        <div className="flex justify-center">
+          <Pagination>
+            <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
+                className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+              />
+            </PaginationItem>
+
+            {getPageNumbers().map((page, idx) => (
+              page === 'ellipsis' ? (
+                <PaginationItem key={`ellipsis-${idx}`}>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              ) : (
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    onClick={() => onPageChange(page)}
+                    isActive={currentPage === page}
+                    className="cursor-pointer"
+                  >
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              )
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
+                className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+        </div>
+      </div>
+    );
+  };
 
   // Show loading while checking auth
   if (checkingAuth) {
@@ -586,8 +781,9 @@ const AdminPanel = () => {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  {getFilteredPsychologists().map((psychologist, index) => (
+                <>
+                  <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    {getPaginatedPsychologists().data.map((psychologist, index) => (
                     <Card 
                       key={psychologist._id} 
                       className="rounded-3xl border-0 shadow-none bg-white transition-all duration-300 overflow-hidden group animate-in fade-in slide-in-from-bottom-2"
@@ -835,7 +1031,16 @@ const AdminPanel = () => {
                       </CardContent>
                     </Card>
                   ))}
-                </div>
+                  </div>
+                  <PaginationControls
+                    currentPage={psychologistsPage}
+                    totalPages={getPaginatedPsychologists().totalPages}
+                    onPageChange={(page) => handlePageChange('psychologists', page)}
+                    currentLimit={psychologistsLimit}
+                    onLimitChange={(limit) => handleLimitChange('psychologists', limit)}
+                    totalItems={getPaginatedPsychologists().total}
+                  />
+                </>
               )}
             </TabsContent>
 
@@ -860,8 +1065,9 @@ const AdminPanel = () => {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  {getFilteredUsers().map((user, index) => (
+                <>
+                  <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    {getPaginatedUsers().data.map((user, index) => (
                     <Card 
                       key={user.userId} 
                       className="rounded-3xl border-0 shadow-none bg-white transition-all duration-300 overflow-hidden group animate-in fade-in slide-in-from-bottom-2"
@@ -923,7 +1129,16 @@ const AdminPanel = () => {
                       </CardContent>
                     </Card>
                   ))}
-                </div>
+                  </div>
+                  <PaginationControls
+                    currentPage={usersPage}
+                    totalPages={getPaginatedUsers().totalPages}
+                    onPageChange={(page) => handlePageChange('users', page)}
+                    currentLimit={usersLimit}
+                    onLimitChange={(limit) => handleLimitChange('users', limit)}
+                    totalItems={getPaginatedUsers().total}
+                  />
+                </>
               )}
             </TabsContent>
 
@@ -942,16 +1157,17 @@ const AdminPanel = () => {
                         No bookings found
                       </h3>
                       <p className="text-gray-500">
-                        {searchTerm || bookingFilter !== 'all' 
-                          ? "Try adjusting your filters" 
+                        {searchTerm || bookingFilter !== 'all'
+                          ? "Try adjusting your filters"
                           : "No bookings have been made yet"}
                       </p>
                     </div>
                   </CardContent>
                 </Card>
               ) : (
-                <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  {getFilteredBookings().map((booking, index) => (
+                <>
+                  <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    {getPaginatedBookings().data.map((booking, index) => (
                     <Card 
                       key={booking._id} 
                       className="rounded-3xl border-0 shadow-none bg-white transition-all duration-300 overflow-hidden animate-in fade-in slide-in-from-bottom-2"
@@ -1032,7 +1248,16 @@ const AdminPanel = () => {
                       </CardContent>
                     </Card>
                   ))}
-                </div>
+                  </div>
+                  <PaginationControls
+                    currentPage={bookingsPage}
+                    totalPages={getPaginatedBookings().totalPages}
+                    onPageChange={(page) => handlePageChange('bookings', page)}
+                    currentLimit={bookingsLimit}
+                    onLimitChange={(limit) => handleLimitChange('bookings', limit)}
+                    totalItems={getPaginatedBookings().total}
+                  />
+                </>
               )}
             </TabsContent>
           </Tabs>
