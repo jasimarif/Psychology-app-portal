@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }) => {
           <BriefcaseIcon className="h-16 w-16 mx-auto text-customGreen animate-pulse" style={{
             animation: 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite'
           }}/>
-          <p className="mt-4 text-customGreen text-xl font-bold font-nunito">Please wait</p>
+          <p className="mt-4 text-customGreen text-xl font-bold font-nunito select-none">Please wait</p>
         </div>
       </div>
     );
