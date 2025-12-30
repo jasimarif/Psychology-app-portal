@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
-import { Login, Signup, ForgotPassword, Dashboard, ProfileSetup, ProfileEdit, AvailabilitySetup, MyBookings } from "./pages"
+import { Login, Signup, ForgotPassword, Dashboard, ProfileSetup, ProfileEdit, AvailabilitySetup, MyBookings, AdminPanel } from "./pages"
 import { AuthProvider } from "./context/AuthContext"
 import ProtectedRoute from "./components/ProtectedRoute"
 import { useAuth } from "./context/AuthContext"
@@ -37,6 +37,7 @@ function App() {
           <Route path="/availability" element={<ProtectedRoute><AvailabilitySetup /></ProtectedRoute>} />
           <Route path="/bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>

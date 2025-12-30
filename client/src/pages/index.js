@@ -6,5 +6,7 @@ import ProfileSetup from "./Profile/ProfileSetup";
 import ProfileEdit from "./Profile/ProfileEdit";
 import AvailabilitySetup from "./Availability/AvailabilitySetup";
 import MyBookings from "./Bookings/MyBookings";
+import AdminPanel from "./Admin/AdminPanel";
 
-export { Login, Signup, ForgotPassword, Dashboard, ProfileSetup, ProfileEdit, AvailabilitySetup, MyBookings };
+export { Login, Signup, ForgotPassword, Dashboard, ProfileSetup, ProfileEdit, AvailabilitySetup, MyBookings, AdminPanel };
+
