@@ -31,7 +31,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
-          {/* <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} /> */}
+          <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
           <Route path="/profile-setup" element={<ProtectedRoute requireProfile={false}><ProfileSetup /></ProtectedRoute>} />
           <Route path="/profile/edit" element={<ProtectedRoute><ProfileEdit /></ProtectedRoute>} />
           <Route path="/availability" element={<ProtectedRoute><AvailabilitySetup /></ProtectedRoute>} />

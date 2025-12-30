@@ -122,7 +122,7 @@ function Login() {
                       )}
                     </Button>
                   </Field>
-                  {/* <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card text-base">
+                  <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card text-base">
                     Or continue with
                   </FieldSeparator>
                   <Field>
@@ -146,7 +146,7 @@ function Login() {
                   </Field>
                   <FieldDescription className="text-center text-base">
                     Don&apos;t have an account? <Link to="/signup" className="text-teal-900 hover:underline font-medium">Sign up</Link>
-                  </FieldDescription> */}
+                  </FieldDescription>
                 </FieldGroup>
               </form>
               <div

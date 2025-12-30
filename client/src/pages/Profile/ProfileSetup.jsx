@@ -801,7 +801,7 @@ const StepEducation = ({ formData, setFormData, handleInputChange, addEducation,
         Add Another Education
       </Button>
 
-      <div className="p-6 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl">
+      <div className="p-6 bg-linear-to-r from-amber-50 to-orange-50 rounded-2xl">
         <Label htmlFor="licenseNumber" className="text-gray-700 font-medium">License Number</Label>
         <p className="text-sm text-gray-500 mb-3">Your professional license number (optional)</p>
         <Input

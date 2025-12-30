@@ -47,6 +47,15 @@ import {
 } from "@/components/icons/DuoTuneIcons";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2 } from "lucide-react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const MyBookings = () => {
   const { currentUser } = useAuth();
@@ -59,6 +68,10 @@ const MyBookings = () => {
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [selectedBookingId, setSelectedBookingId] = useState(null);
   const [cancellationReason, setCancellationReason] = useState("");
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Load psychologist profile to get ID
   useEffect(() => {
@@ -112,6 +125,11 @@ const MyBookings = () => {
 
     loadBookings();
   }, [psychologistId, currentUser]);
+
+  // Reset to page 1 when filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filter]);
 
   const getFilteredBookings = () => {
     switch (filter) {
@@ -229,6 +247,130 @@ const MyBookings = () => {
   };
 
   const stats = getBookingStats();
+
+  // Pagination helper functions
+  const getPaginatedData = (data, page, limit) => {
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    return data.slice(startIndex, endIndex);
+  };
+
+  const getTotalPages = (totalItems, limit) => {
+    return Math.ceil(totalItems / limit);
+  };
+
+  const getPaginatedBookings = () => {
+    const filtered = getFilteredBookings();
+    return {
+      data: getPaginatedData(filtered, currentPage, itemsPerPage),
+      total: filtered.length,
+      totalPages: getTotalPages(filtered.length, itemsPerPage)
+    };
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleLimitChange = (newLimit) => {
+    setItemsPerPage(Number(newLimit));
+    setCurrentPage(1);
+  };
+
+  // Pagination component
+  const PaginationControls = ({ currentPage, totalPages, onPageChange, currentLimit, onLimitChange, totalItems }) => {
+    const getPageNumbers = () => {
+      const pages = [];
+      const maxVisible = 5;
+
+      if (totalPages <= maxVisible) {
+        for (let i = 1; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        if (currentPage <= 3) {
+          for (let i = 1; i <= 4; i++) pages.push(i);
+          pages.push('ellipsis');
+          pages.push(totalPages);
+        } else if (currentPage >= totalPages - 2) {
+          pages.push(1);
+          pages.push('ellipsis');
+          for (let i = totalPages - 3; i <= totalPages; i++) pages.push(i);
+        } else {
+          pages.push(1);
+          pages.push('ellipsis');
+          pages.push(currentPage - 1);
+          pages.push(currentPage);
+          pages.push(currentPage + 1);
+          pages.push('ellipsis');
+          pages.push(totalPages);
+        }
+      }
+
+      return pages;
+    };
+
+    if (totalPages === 0) return null;
+
+    return (
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <span>Show</span>
+          <Select value={String(currentLimit)} onValueChange={onLimitChange}>
+            <SelectTrigger className="w-20 h-9 rounded-lg">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="5">5</SelectItem>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="20">20</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+              <SelectItem value="100">100</SelectItem>
+            </SelectContent>
+          </Select>
+          <span>of {totalItems} items</span>
+        </div>
+
+        <div className="flex justify-center">
+          <Pagination>
+            <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
+                className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+              />
+            </PaginationItem>
+
+            {getPageNumbers().map((page, idx) => (
+              page === 'ellipsis' ? (
+                <PaginationItem key={`ellipsis-${idx}`}>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              ) : (
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    onClick={() => onPageChange(page)}
+                    isActive={currentPage === page}
+                    className="cursor-pointer"
+                  >
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              )
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
+                className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+        </div>
+      </div>
+    );
+  };
 
   if (loading) {
     return (
@@ -425,7 +567,7 @@ const MyBookings = () => {
             </Card>
           )}
 
-          {getFilteredBookings().length === 0 ? (
+          {getPaginatedBookings().total === 0 ? (
             <Card className="rounded-3xl border-0 shadow-none bg-white">
               <CardContent className="pt-12 pb-12">
                 <div className="text-center">
@@ -444,8 +586,9 @@ const MyBookings = () => {
               </CardContent>
             </Card>
           ) : (
-            <div className="space-y-4">
-              {getFilteredBookings().map((booking) => (
+            <>
+              <div className="space-y-4">
+                {getPaginatedBookings().data.map((booking) => (
                 <Card 
                   key={booking._id} 
                   className="rounded-3xl border-0 shadow-none bg-customGreen/5 transition-all duration-300 overflow-hidden group py-0"
@@ -615,7 +758,16 @@ const MyBookings = () => {
                   </CardContent>
                 </Card>
               ))}
-            </div>
+              </div>
+              <PaginationControls
+                currentPage={currentPage}
+                totalPages={getPaginatedBookings().totalPages}
+                onPageChange={handlePageChange}
+                currentLimit={itemsPerPage}
+                onLimitChange={handleLimitChange}
+                totalItems={getPaginatedBookings().total}
+              />
+            </>
           )}
         </div>
       </SidebarInset>
