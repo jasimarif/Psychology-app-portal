@@ -43,6 +43,7 @@ const ProfileSetup = () => {
   const [currentSpecialty, setCurrentSpecialty] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [validationErrors, setValidationErrors] = useState([])
   
   // Steps configuration
   const steps = [
@@ -182,16 +183,66 @@ const ProfileSetup = () => {
   const updateWorkExperience = (index, field, value) => {
     setFormData(prev => ({
       ...prev,
-      workExperience: prev.workExperience.map((exp, i) => 
+      workExperience: prev.workExperience.map((exp, i) =>
         i === index ? { ...exp, [field]: value } : exp
       )
     }))
+  }
+
+  const validateForm = () => {
+    const errors = []
+
+    // Basic Info validations
+    if (!formData.name.trim()) {
+      errors.push("Full Name is required")
+    }
+    if (!formData.title.trim()) {
+      errors.push("Professional Title is required")
+    }
+    if (!formData.email.trim()) {
+      errors.push("Email is required")
+    }
+    if (!formData.location.trim()) {
+      errors.push("Location is required")
+    }
+    if (!formData.experience.trim()) {
+      errors.push("Years of Experience is required")
+    }
+    if (!formData.bio.trim()) {
+      errors.push("Bio/About You is required")
+    }
+
+    // Expertise validations
+    if (formData.specialties.length === 0) {
+      errors.push("At least one Specialty is required")
+    }
+    if (formData.languages.length === 0) {
+      errors.push("At least one Language is required")
+    }
+
+    // Pricing validation
+    if (!formData.price || formData.price <= 0) {
+      errors.push("Session Price is required and must be greater than 0")
+    }
+
+    return errors
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
     setError("")
+    setValidationErrors([])
+
+    // Validate form
+    const errors = validateForm()
+    if (errors.length > 0) {
+      setValidationErrors(errors)
+      setError("Please fill in all required fields")
+      setLoading(false)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
 
     try {
       await psychologistService.createProfile(formData, currentUser.uid)
@@ -334,10 +385,19 @@ const ProfileSetup = () => {
 
         {error && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl animate-shake">
-            <p className="text-red-600 text-sm flex items-center gap-2">
+            <p className="text-red-600 font-semibold text-sm flex items-center gap-2 mb-2">
               <X className="w-4 h-4" />
               {error}
             </p>
+            {validationErrors.length > 0 && (
+              <ul className="ml-6 mt-3 space-y-1">
+                {validationErrors.map((err, index) => (
+                  <li key={index} className="text-red-600 text-sm list-disc">
+                    {err}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         )}
 
