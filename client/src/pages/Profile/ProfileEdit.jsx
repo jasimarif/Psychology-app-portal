@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "@/context/AuthContext"
 import { psychologistService } from "@/services/psychologistService"
 import { deleteUserAccount } from "@/lib/firebase"
+import { toast } from "sonner"
 import { AppSidebar } from "@/components/app-sidebar"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
@@ -215,9 +216,11 @@ const ProfileEdit = () => {
     try {
       await psychologistService.updateProfile({ ...formData, deleteProfileImage: deleteImage }, currentUser.uid)
       setLoading(false)
+      toast.success("Profile updated successfully!")
     } catch (err) {
       setError(err.message || "Failed to update profile. Please try again.")
       setLoading(false)
+      toast.error(err.message || "Failed to update profile. Please try again.")
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }

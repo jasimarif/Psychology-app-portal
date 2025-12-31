@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { psychologistService } from "@/services/psychologistService";
+import { toast } from "sonner";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
@@ -181,21 +182,23 @@ const MyBookings = () => {
 
       // Update local state
       setBookings(prev => prev.map(b =>
-        b._id === selectedBookingId ? { 
-          ...b, 
-          status: 'cancelled', 
+        b._id === selectedBookingId ? {
+          ...b,
+          status: 'cancelled',
           cancellationReason: cancellationReason,
           cancelledBy: 'psychologist'
         } : b
       ));
-      
+
       // Close dialog and reset state
       setCancelDialogOpen(false);
       setSelectedBookingId(null);
       setCancellationReason("");
+      toast.success("Booking cancelled successfully");
     } catch (err) {
       console.error('Error cancelling booking:', err);
       setError(err.message);
+      toast.error(err.message || "Failed to cancel booking");
     } finally {
       setActionLoading(null);
     }

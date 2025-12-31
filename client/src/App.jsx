@@ -3,6 +3,7 @@ import { Login, Signup, ForgotPassword, Dashboard, ProfileSetup, ProfileEdit, Av
 import { AuthProvider } from "./context/AuthContext"
 import ProtectedRoute from "./components/ProtectedRoute"
 import { useAuth } from "./context/AuthContext"
+import { Toaster } from "@/components/ui/sonner"
 
 const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
 
@@ -73,6 +74,7 @@ function App() {
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>
+      <Toaster position="top-right" />
     </AuthProvider>
   )
 }

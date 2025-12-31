@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { psychologistService } from "@/services/psychologistService";
+import { toast } from "sonner";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
@@ -168,11 +169,12 @@ const AvailabilitySetup = () => {
     setSuccess("");
 
     try {
-    
+
 
       // Validate at least one day is configured
       if (availability.schedule.length === 0) {
         setError('Please add at least one day to your schedule');
+        toast.error('Please add at least one day to your schedule');
         setLoading(false);
         return;
       }
@@ -182,6 +184,7 @@ const AvailabilitySetup = () => {
         for (const slot of day.slots) {
           if (slot.startTime >= slot.endTime) {
             setError('End time must be after start time for all slots');
+            toast.error('End time must be after start time for all slots');
             setLoading(false);
             return;
           }
@@ -190,9 +193,11 @@ const AvailabilitySetup = () => {
 
       await psychologistService.updateProfile({ availability }, currentUser.uid);
       setSuccess('Availability updated successfully!');
+      toast.success('Availability updated successfully!');
       setLoading(false);
     } catch (err) {
       setError(err.message || 'Failed to update availability');
+      toast.error(err.message || 'Failed to update availability');
       setLoading(false);
     }
   };
