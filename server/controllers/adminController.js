@@ -261,39 +261,3 @@ export const togglePsychologistStatus = async (req, res) => {
     });
   }
 };
-
-// Admin login with predefined credentials
-export const adminLogin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    const adminEmail = process.env.ADMIN_EMAIL;
-    const adminPassword = process.env.ADMIN_PASSWORD;
-
-    if (!email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: 'Email and password are required'
-      });
-    }
-
-    if (email === adminEmail && password === adminPassword) {
-      res.json({
-        success: true,
-        message: 'Login successful'
-      });
-    } else {
-      res.status(401).json({
-        success: false,
-        message: 'Invalid email or password'
-      });
-    }
-  } catch (error) {
-    console.error('Error in adminLogin:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Login failed',
-      error: error.message
-    });
-  }
-};

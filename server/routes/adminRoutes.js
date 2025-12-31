@@ -6,13 +6,10 @@ import {
   getAllUsers,
   getAdminStats,
   getUserBookings,
-  togglePsychologistStatus,
-  adminLogin
+  togglePsychologistStatus
 } from '../controllers/adminController.js';
 
 const router = express.Router();
-
-router.post('/login', adminLogin);
 
 router.get('/stats', verifyToken, getAdminStats);
 router.get('/psychologists', verifyToken, getAllPsychologists);

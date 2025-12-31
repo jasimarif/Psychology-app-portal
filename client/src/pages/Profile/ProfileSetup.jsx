@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "@/context/AuthContext"
+import { logout } from "@/lib/firebase"
 import { psychologistService } from "@/services/psychologistService"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Upload, Camera, X, ChevronRight, ChevronLeft, Check, Sparkles, User, Briefcase, GraduationCap, DollarSign, Globe, Heart, Loader2 } from "lucide-react"
+import { Plus, Upload, Camera, X, ChevronRight, ChevronLeft, Check, Sparkles, User, Briefcase, GraduationCap, DollarSign, Globe, Heart, Loader2, LogOut } from "lucide-react"
 import { ProfileIcon, BriefcaseIcon, GraduationIcon, GlobeIcon, StethoscopeIcon } from "@/components/icons/DuoTuneIcons"
 const ProfileSetup = () => {
   const navigate = useNavigate()
@@ -255,6 +256,15 @@ const ProfileSetup = () => {
     }
   }
 
+  const handleLogout = async () => {
+    try {
+      await logout()
+      navigate('/login')
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
+  }
+
   // Progress calculation
   const progress = ((currentStep + 1) / steps.length) * 100
   
@@ -262,6 +272,8 @@ const ProfileSetup = () => {
   if (showWelcome) {
     return (
       <div className="min-h-screen bg-linear-to-br from-customGreen via-teal-700 to-customGreenHover flex items-center justify-center overflow-hidden">
+
+        
         <div className="text-center animate-fade-in">
           {/* Animated circles background */}
           <div className="absolute inset-0 overflow-hidden">
@@ -312,6 +324,19 @@ const ProfileSetup = () => {
       </div>
       
       <div className="relative max-w-4xl mx-auto px-4 py-8">
+        {/* Logout button */}
+        <div className="flex justify-end mb-4">
+          <Button
+            onClick={handleLogout}
+            variant="outline"
+            size="sm"
+            className="text-gray-500 hover:text-red-500 hover:border-red-200 hover:bg-red-50 gap-2"
+          >
+            <LogOut className="w-4 h-4" />
+            Logout
+          </Button>
+        </div>
+        
         {/* Header with progress */}
         <div className="mb-8 animate-fade-in">
           <div className="text-center mb-6">

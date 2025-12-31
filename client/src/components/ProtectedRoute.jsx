@@ -1,6 +1,8 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
+
 const ProtectedRoute = ({ children, requireProfile = true }) => {
   const { currentUser, loading, profileComplete, checkingProfile } = useAuth();
   const location = useLocation();
@@ -19,6 +21,10 @@ const ProtectedRoute = ({ children, requireProfile = true }) => {
   // Redirect to login if not authenticated
   if (!currentUser) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (currentUser.email === ADMIN_EMAIL) {
+    return <Navigate to="/admin" replace />;
   }
 
   if (checkingProfile) {

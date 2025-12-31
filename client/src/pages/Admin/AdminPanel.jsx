@@ -53,12 +53,17 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import AdminLogin from "./AdminLogin";
+import { logout } from "@/lib/firebase";
+import { useNavigate } from "react-router-dom";
+
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
 
 const AdminPanel = () => {
   const { currentUser } = useAuth();
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
-  const [checkingAuth, setCheckingAuth] = useState(true);
+  const navigate = useNavigate();
+  
+  const isAdmin = currentUser?.email === ADMIN_EMAIL;
+  
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("psychologists");
   const [stats, setStats] = useState(null);
@@ -89,32 +94,8 @@ const AdminPanel = () => {
   const [expandedPsychologist, setExpandedPsychologist] = useState(null);
   const [statusLoading, setStatusLoading] = useState(null);
 
-  // Check admin authentication on mount
   useEffect(() => {
-    const checkAdminAuth = () => {
-      const adminAuth = sessionStorage.getItem('adminAuth');
-      if (adminAuth) {
-        try {
-          const authData = JSON.parse(adminAuth);
-          // 1 hour session
-          const isValid = authData.authenticated && 
-            (Date.now() - authData.timestamp) < 1 * 60 * 60 * 1000;
-          setIsAdminAuthenticated(isValid);
-          if (!isValid) {
-            sessionStorage.removeItem('adminAuth');
-          }
-        } catch {
-          setIsAdminAuthenticated(false);
-          sessionStorage.removeItem('adminAuth');
-        }
-      }
-      setCheckingAuth(false);
-    };
-    checkAdminAuth();
-  }, []);
-
-  useEffect(() => {
-    if (!isAdminAuthenticated || checkingAuth) return;
+    if (!isAdmin) return;
     
     const loadStats = async () => {
       if (!currentUser?.uid) return;
@@ -135,10 +116,10 @@ const AdminPanel = () => {
       }
     };
     loadStats();
-  }, [currentUser, isAdminAuthenticated, checkingAuth]);
+  }, [currentUser, isAdmin]);
 
   useEffect(() => {
-    if (!isAdminAuthenticated || checkingAuth) return;
+    if (!isAdmin) return;
 
     const loadData = async () => {
       if (!currentUser?.uid) return;
@@ -196,7 +177,7 @@ const AdminPanel = () => {
     };
 
     loadData();
-  }, [activeTab, currentUser, isAdminAuthenticated, checkingAuth]);
+  }, [activeTab, currentUser, isAdmin]);
 
   // Reset to page 1 when search term or filters change
   useEffect(() => {
@@ -211,13 +192,13 @@ const AdminPanel = () => {
     setBookingsPage(1);
   }, [searchTerm, bookingFilter]);
 
-  const handleAdminLogin = () => {
-    setIsAdminAuthenticated(true);
-  };
-
-  const handleAdminLogout = () => {
-    sessionStorage.removeItem('adminAuth');
-    setIsAdminAuthenticated(false);
+  const handleAdminLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   // Load user bookings
@@ -559,18 +540,26 @@ const AdminPanel = () => {
     );
   };
 
-  // Show loading while checking auth
-  if (checkingAuth) {
+  // Show unauthorized if not admin
+  if (!isAdmin) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-customGreen" />
+        <div className="text-center p-8 bg-white rounded-2xl shadow-sm max-w-md">
+          <ShieldCheck className="w-16 h-16 text-red-400 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-gray-700 mb-2">Access Denied</h1>
+          <p className="text-gray-500 mb-6">
+            You don't have permission to access the admin panel. 
+            Only authorized administrators can view this page.
+          </p>
+          <Button
+            onClick={() => navigate('/dashboard')}
+            className="bg-customGreen hover:bg-customGreenHover text-white rounded-xl"
+          >
+            Go to Dashboard
+          </Button>
+        </div>
       </div>
     );
-  }
-
-  // Show login if not authenticated
-  if (!isAdminAuthenticated) {
-    return <AdminLogin onLogin={handleAdminLogin} />;
   }
 
   return (
