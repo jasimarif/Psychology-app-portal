@@ -43,6 +43,11 @@ const psychologistSchema = new mongoose.Schema({
     default: 'USD',
     enum: ['USD', 'EUR', 'GBP', 'CAD', 'AUD']
   },
+  gender: {
+    type: String,
+    enum: ['male', 'female', ''],
+    default: ''
+  },
   languages: [{
     type: String
   }],

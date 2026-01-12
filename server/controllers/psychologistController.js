@@ -14,6 +14,7 @@ export const createProfile = async (req, res) => {
       experience,
       bio,
       price,
+      gender,
       languages,
       specialties,
       education,
@@ -59,13 +60,14 @@ export const createProfile = async (req, res) => {
       experience,
       bio,
       price,
+      gender,
       languages: parsedLanguages,
       specialties: parsedSpecialties,
       education: parsedEducation,
       workExperience: parsedWorkExperience,
       licenseNumber,
       // typicalHours,
-      profileImage: req.file ? req.file.path : null 
+      profileImage: req.file ? req.file.path : null
     };
 
     console.log('Profile data to save:', profileData);
@@ -126,6 +128,7 @@ export const updateProfile = async (req, res) => {
       experience,
       bio,
       price,
+      gender,
       languages,
       specialties,
       education,
@@ -203,6 +206,7 @@ export const updateProfile = async (req, res) => {
     psychologist.experience = experience || psychologist.experience;
     psychologist.bio = bio || psychologist.bio;
     psychologist.price = price || psychologist.price;
+    psychologist.gender = gender || psychologist.gender;
     psychologist.languages = parsedLanguages;
     psychologist.specialties = parsedSpecialties;
     psychologist.education = parsedEducation;

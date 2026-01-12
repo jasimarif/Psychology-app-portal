@@ -29,6 +29,7 @@ const ProfileSetup = () => {
     experience: "",
     bio: "",
     price: "",
+    gender: "",
     languages: [],
     specialties: [],
     phone: "",
@@ -681,6 +682,34 @@ const StepBasicInfo = ({ formData, setFormData, handleInputChange, imagePreview,
             className="h-12 border-gray-200 focus:border-customGreen focus:ring-customGreen/20"
             required
           />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label className="text-gray-700">Gender</Label>
+        <div className="flex gap-4">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              name="gender"
+              value="male"
+              checked={formData.gender === 'male'}
+              onChange={handleInputChange}
+              className="w-4 h-4 text-customGreen border-gray-300 focus:ring-customGreen"
+            />
+            <span className="text-gray-700">Male</span>
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              name="gender"
+              value="female"
+              checked={formData.gender === 'female'}
+              onChange={handleInputChange}
+              className="w-4 h-4 text-customGreen border-gray-300 focus:ring-customGreen"
+            />
+            <span className="text-gray-700">Female</span>
+          </label>
         </div>
       </div>
 

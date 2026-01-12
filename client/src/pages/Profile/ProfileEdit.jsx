@@ -48,6 +48,7 @@ const ProfileEdit = () => {
     experience: "",
     bio: "",
     price: "",
+    gender: "",
     languages: [],
     specialties: [],
     phone: "",
@@ -82,6 +83,7 @@ const ProfileEdit = () => {
             experience: profile.experience,
             bio: profile.bio,
             price: profile.price,
+            gender: profile.gender || "",
             languages: profile.languages || [],
             specialties: profile.specialties || [],
             phone: profile.phone || "",
@@ -458,6 +460,34 @@ const ProfileEdit = () => {
                       required
                       className="focus-visible:ring-customGreen"
                     />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Gender</Label>
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="male"
+                        checked={formData.gender === 'male'}
+                        onChange={handleInputChange}
+                        className="w-4 h-4 text-customGreen border-gray-300 focus:ring-customGreen"
+                      />
+                      <span className="text-gray-700">Male</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="female"
+                        checked={formData.gender === 'female'}
+                        onChange={handleInputChange}
+                        className="w-4 h-4 text-customGreen border-gray-300 focus:ring-customGreen"
+                      />
+                      <span className="text-gray-700">Female</span>
+                    </label>
                   </div>
                 </div>
 

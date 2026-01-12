@@ -30,6 +30,7 @@ export const psychologistService = {
       data.append('experience', formData.experience);
       data.append('bio', formData.bio);
       data.append('price', formData.price);
+      if (formData.gender) data.append('gender', formData.gender);
       data.append('languages', JSON.stringify(formData.languages));
       data.append('specialties', JSON.stringify(formData.specialties));
       data.append('education', JSON.stringify(formData.education));
@@ -105,6 +106,7 @@ export const psychologistService = {
       if (formData.experience) data.append('experience', formData.experience);
       if (formData.bio) data.append('bio', formData.bio);
       if (formData.price) data.append('price', formData.price);
+      if (formData.gender) data.append('gender', formData.gender);
       if (formData.languages) data.append('languages', JSON.stringify(formData.languages));
       if (formData.specialties) data.append('specialties', JSON.stringify(formData.specialties));
       if (formData.education) data.append('education', JSON.stringify(formData.education));
