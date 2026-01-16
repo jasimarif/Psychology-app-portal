@@ -65,7 +65,7 @@ function Signup() {
       setLoading(false)
     } else {
       console.log("Signup successful:", user)
-      navigate("/profile-setup")
+      navigate("/verify-email")
     }
   }
 

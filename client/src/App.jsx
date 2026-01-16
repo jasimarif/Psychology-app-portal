@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
-import { Login, Signup, ForgotPassword, Dashboard, ProfileSetup, ProfileEdit, AvailabilitySetup, MyBookings, AdminPanel } from "./pages"
+import { Login, Signup, ForgotPassword, VerifyEmail, Dashboard, ProfileSetup, ProfileEdit, AvailabilitySetup, MyBookings, AdminPanel } from "./pages"
 import { AuthProvider } from "./context/AuthContext"
 import ProtectedRoute from "./components/ProtectedRoute"
 import { useAuth } from "./context/AuthContext"
@@ -9,12 +9,17 @@ const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
 
 function PublicRoute({ children }) {
   const { currentUser, profileComplete, checkingProfile } = useAuth()
-  
+
   if (currentUser) {
+    // If email is not verified, redirect to verify-email page
+    if (!currentUser.emailVerified) {
+      return <Navigate to="/verify-email" replace />
+    }
+
     if (currentUser.email === ADMIN_EMAIL) {
       return <Navigate to="/admin" replace />
     }
-    
+
     if (checkingProfile) {
       return (
         <div className="min-h-screen flex items-center justify-center">
@@ -27,7 +32,7 @@ function PublicRoute({ children }) {
     }
     return <Navigate to={profileComplete ? "/dashboard" : "/profile-setup"} replace />
   }
-  
+
   return children
 }
 
@@ -65,6 +70,7 @@ function App() {
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
           <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/profile-setup" element={<ProtectedRoute requireProfile={false}><ProfileSetup /></ProtectedRoute>} />
           <Route path="/profile/edit" element={<ProtectedRoute><ProfileEdit /></ProtectedRoute>} />
           <Route path="/availability" element={<ProtectedRoute><AvailabilitySetup /></ProtectedRoute>} />

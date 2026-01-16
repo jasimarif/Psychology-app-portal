@@ -23,6 +23,11 @@ const ProtectedRoute = ({ children, requireProfile = true }) => {
     return <Navigate to="/login" replace />;
   }
 
+  // Redirect to verify-email if email is not verified
+  if (!currentUser.emailVerified) {
+    return <Navigate to="/verify-email" replace />;
+  }
+
   if (currentUser.email === ADMIN_EMAIL) {
     return <Navigate to="/admin" replace />;
   }
