@@ -345,7 +345,7 @@ const ProfileSetup = () => {
               <BriefcaseIcon className="w-4 h-4" />
               Complete your profile to start accepting clients
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-customGreen mb-2">
+            <h1 className="text-4xl md:text-5xl font-light text-gray-700 tracking-tight mb-4">
               Build Your Professional Profile
             </h1>
             <p className="text-gray-500">

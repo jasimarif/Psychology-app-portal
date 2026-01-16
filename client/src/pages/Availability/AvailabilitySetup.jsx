@@ -171,7 +171,6 @@ const AvailabilitySetup = () => {
     try {
 
 
-      // Validate at least one day is configured
       if (availability.schedule.length === 0) {
         setError('Please add at least one day to your schedule');
         toast.error('Please add at least one day to your schedule');
@@ -179,7 +178,6 @@ const AvailabilitySetup = () => {
         return;
       }
 
-      // Validate all slots have valid times
       for (const day of availability.schedule) {
         for (const slot of day.slots) {
           if (slot.startTime >= slot.endTime) {
@@ -207,7 +205,7 @@ const AvailabilitySetup = () => {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 select-none">
+          <header className="flex h-16 shrink-0 items-center gap-2 bg-gray-50 px-4 select-none">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
@@ -264,7 +262,7 @@ const AvailabilitySetup = () => {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 animate-in fade-in duration-300 select-none">
+        <header className="flex h-16 shrink-0 items-center gap-2 bg-gray-50 px-4 animate-in fade-in duration-300 select-none">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
@@ -277,19 +275,17 @@ const AvailabilitySetup = () => {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 lg:p-8 bg-white min-h-[calc(100vh-4rem)] animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="mb-4">
-            <div className="flex items-center justify-between mb-6 select-none">
-              <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <CalendarIcon className="w-8 h-8 text-customGreenHover" />
-                  <h1 className="text-3xl md:text-4xl font-bold text-customGreenHover">
-                    Set Your Availability
-                  </h1>
-                </div>
-                <p className="text-gray-500 text-lg">
-                  Configure your weekly schedule and session preferences
-                </p>
-              </div>
-            </div>
+            <header className="select-none">
+              <p className="text-xs font-medium tracking-[0.2em] uppercase text-customGreen mb-4">
+                Schedule Settings
+              </p>
+              <h1 className="text-5xl md:text-6xl font-light text-gray-700 tracking-tight mb-4">
+                Set Your Availability
+              </h1>
+              <p className="text-lg text-gray-500 font-light max-w-xl">
+                Configure your weekly schedule and session preferences
+              </p>
+            </header>
           </div>
 
         {error && (

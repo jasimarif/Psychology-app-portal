@@ -255,7 +255,7 @@ const ProfileEdit = () => {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 select-none">
+          <header className="flex h-16 shrink-0 items-center gap-2 bg-gray-50 px-4 select-none">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
@@ -302,7 +302,7 @@ const ProfileEdit = () => {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white animate-in fade-in duration-300 select-none">
+        <header className="flex h-16 shrink-0 items-center gap-2 a px-4 bg-gray-50 animate-in fade-in duration-300 select-none">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
@@ -316,19 +316,17 @@ const ProfileEdit = () => {
 
         <div className="flex flex-1 flex-col gap-4 p-4 lg:p-8 bg-white min-h-[calc(100vh-4rem)] animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="mb-4">
-            <div className="flex items-center justify-between mb-6 select-none">
-              <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <ProfileIcon className="w-8 h-8 text-customGreenHover" />
-                  <h1 className="text-3xl md:text-4xl font-bold text-customGreenHover">
-                    Edit Your Profile
-                  </h1>
-                </div>
-                <p className="text-gray-500 text-lg">
-                  Update your professional information
-                </p>
-              </div>
-            </div>
+            <header className="select-none">
+              <p className="text-xs font-medium tracking-[0.2em] uppercase text-customGreen mb-4">
+                Profile Management
+              </p>
+              <h1 className="text-5xl md:text-6xl font-light text-gray-700 tracking-tight mb-4">
+                Edit Your Profile
+              </h1>
+              <p className="text-lg text-gray-500 font-light max-w-xl">
+                Update your professional information
+              </p>
+            </header>
           </div>
 
           {error && (
@@ -341,7 +339,7 @@ const ProfileEdit = () => {
             {/* Basic Information */}
             <Card className="border-customGreen/10 shadow-none border">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-customGreen select-none">
+                <CardTitle className="flex items-center gap-2 text-gray-700 select-none">
                 <ProfileIcon className="w-5 h-5" />
                   Basic Information
                 </CardTitle>
@@ -509,7 +507,7 @@ const ProfileEdit = () => {
             {/* Specialties & Languages */}
             <Card className="border-customGreen/10 shadow-none border">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-customGreen select-none">
+                <CardTitle className="flex items-center gap-2 text-gray-700 select-none">
                   <StethoscopeIcon className="w-5 h-5" />
                   Specialties & Languages
                 </CardTitle>
@@ -583,7 +581,7 @@ const ProfileEdit = () => {
             {/* Education */}
             <Card className="border-customGreen/10 shadow-none border">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-customGreen select-none">
+                <CardTitle className="flex items-center gap-2 text-gray-700 select-none">
                   <GraduationIcon className="w-5 h-5" />
                   Education & Credentials
                 </CardTitle>
@@ -658,7 +656,7 @@ const ProfileEdit = () => {
             {/* Work Experience */}
             <Card className="border-customGreen/10 shadow-none border">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-customGreen select-none">
+                <CardTitle className="flex items-center gap-2 text-gray-700 select-none">
                   <BriefcaseIcon className="w-5 h-5" />
                   Work Experience
                 </CardTitle>
@@ -732,7 +730,7 @@ const ProfileEdit = () => {
             {/* Pricing & Availability */}
             <Card className="border-customGreen/10 shadow-none border">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-customGreen select-none">
+                <CardTitle className="flex items-center gap-2 text-gray-700 select-none">
                   <TimeIcon className="w-5 h-5" />
                   Pricing 
                 </CardTitle>

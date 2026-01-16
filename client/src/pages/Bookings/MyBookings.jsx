@@ -380,7 +380,7 @@ const MyBookings = () => {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white select-none">
+          <header className="flex h-16 shrink-0 items-center gap-2  px-4 bg-gray-50 select-none">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
@@ -447,7 +447,7 @@ const MyBookings = () => {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white animate-in fade-in duration-300 select-none">
+        <header className="flex h-16 shrink-0 items-center gap-2  px-4 bg-gray-50 animate-in fade-in duration-300 select-none">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
@@ -462,31 +462,29 @@ const MyBookings = () => {
         <div className="flex flex-1 flex-col gap-4 p-4 lg:p-8 bg-white min-h-[calc(100vh-4rem)] animate-in fade-in slide-in-from-bottom-4 duration-500">
           {/* Header Section */}
           <div className="mb-4">
-            <div className="flex items-center justify-between mb-6 select-none">
-              <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <CalendarIcon className="w-8 h-8 text-customGreenHover" />
-                  <h1 className="text-3xl md:text-4xl font-bold text-customGreenHover">
-                    Session Bookings
-                  </h1>
-                </div>
-                <p className="text-gray-500 text-lg">
-                  Manage your therapy sessions and appointments
-                </p>
-              </div>
-            </div>
+            <header className="select-none">
+              <p className="text-xs font-medium tracking-[0.2em] uppercase text-customGreen mb-4">
+                Appointments
+              </p>
+              <h1 className="text-5xl md:text-6xl font-light text-gray-700 tracking-tight mb-4">
+                Session Bookings
+              </h1>
+              <p className="text-lg text-gray-500 font-light max-w-xl">
+                Manage your therapy sessions and appointments
+              </p>
+            </header>
 
             {/* Statistics Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-              <Card className="rounded-2xl border-0 shadow-none bg-lightGreen/50">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 mb-6 select-none">
+              <Card className="rounded-2xl border-0 shadow-none bg-lightGray">
                 <CardContent className="p-4">
-                  <div className="flex items-center gap-3 select-none">
-                    <div className="w-10 h-10 rounded-xl bg-lightGreen/95 flex items-center justify-center">
-                      <StatsIcon className="w-5 h-5 text-customGreen" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-customGray/10 flex items-center justify-center">
+                      <StatsIcon className="w-6 h-6 text-customGray" />
                     </div>
                     <div>
-                      <p className="text-xl font-bold text-gray-700">{stats.total}</p>
-                      <p className="text-xs text-gray-500">Total</p>
+                      <p className="text-2xl font-bold text-gray-700">{stats.total}</p>
+                      <p className="text-sm text-customGray">Total</p>
                     </div>
                   </div>
                 </CardContent>
@@ -494,27 +492,27 @@ const MyBookings = () => {
 
               <Card className="rounded-2xl border-0 shadow-none bg-emerald-50">
                 <CardContent className="p-4">
-                  <div className="flex items-center gap-3 select-none">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-200/50 flex items-center justify-center">
-                      <CheckIcon className="w-5 h-5 text-emerald-700" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-emerald-200/50 flex items-center justify-center">
+                      <CheckIcon className="w-6 h-6 text-emerald-700" />
                     </div>
                     <div>
-                      <p className="text-xl font-bold text-emerald-900">{stats.confirmed}</p>
-                      <p className="text-xs text-emerald-700">Confirmed</p>
+                      <p className="text-2xl font-bold text-emerald-900">{stats.confirmed}</p>
+                      <p className="text-sm text-emerald-700">Confirmed</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="rounded-2xl border-0 shadow-none bg-blue-50">
+              <Card className="rounded-2xl border-0 shadow-none bg-lightGreen/50">
                 <CardContent className="p-4">
-                  <div className="flex items-center gap-3 select-none">
-                    <div className="w-10 h-10 rounded-xl bg-blue-200/50 flex items-center justify-center">
-                      <CheckIcon className="w-5 h-5 text-blue-700" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-lightGreen/95 flex items-center justify-center">
+                      <CheckIcon className="w-6 h-6 text-customGreen" />
                     </div>
                     <div>
-                      <p className="text-xl font-bold text-blue-900">{stats.completed}</p>
-                      <p className="text-xs text-blue-700">Completed</p>
+                      <p className="text-2xl font-bold text-customGreen">{stats.completed}</p>
+                      <p className="text-sm text-customGreen">Completed</p>
                     </div>
                   </div>
                 </CardContent>
@@ -522,13 +520,13 @@ const MyBookings = () => {
 
               <Card className="rounded-2xl border-0 shadow-none bg-red-50">
                 <CardContent className="p-4">
-                  <div className="flex items-center gap-3 select-none">
-                    <div className="w-10 h-10 rounded-xl bg-red-200/50 flex items-center justify-center">
-                      <CloseIcon className="w-5 h-5 text-red-700" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-red-200/50 flex items-center justify-center">
+                      <CloseIcon className="w-6 h-6 text-red-700" />
                     </div>
                     <div>
-                      <p className="text-xl font-bold text-red-900">{stats.cancelled}</p>
-                      <p className="text-xs text-red-700">Cancelled</p>
+                      <p className="text-2xl font-bold text-red-900">{stats.cancelled}</p>
+                      <p className="text-sm text-red-700">Cancelled</p>
                     </div>
                   </div>
                 </CardContent>
@@ -594,22 +592,22 @@ const MyBookings = () => {
                 {getPaginatedBookings().data.map((booking) => (
                 <Card 
                   key={booking._id} 
-                  className="rounded-3xl border-0 shadow-none bg-customGreen/5 transition-all duration-300 overflow-hidden group py-0"
+                  className="rounded-3xl border-0 shadow-none bg-lightGray transition-all duration-300 overflow-hidden group py-0"
                 >
                   <CardContent className="p-0">
                     <div className="flex flex-col lg:flex-row">
                       {/* Left Section - Client Info */}
                       <div className="flex-1 p-6 lg:p-8">
                         <div className="flex items-start gap-4 mb-6">
-                          <Avatar className="w-16 h-16 ring-4 ring-customGreen/10 group-hover:ring-customGreen/20 transition-all">
-                            <AvatarFallback className="bg-customGreen/10 text-customGreen text-lg font-bold">
+                          <Avatar className="w-16 h-16 ring-4 ring-customGray/10 group-hover:ring-customGray/20 transition-all">
+                            <AvatarFallback className="bg-customGray/10 text-customGray text-lg font-bold">
                               <UsersIcon className="w-8 h-8" />
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex-1">
                             <div className="flex items-start justify-between mb-2">
                               <div>
-                                <h3 className="text-xl font-bold text-gray-700 mb-1 group-hover:text-customGreen transition-colors">
+                                <h3 className="text-xl font-bold text-gray-700 mb-1 group-hover:text-customGray transition-colors">
                                   {booking.userName || booking.userEmail || `Client ID: ${booking.userId}`}
                                 </h3>
                                 <p className="text-sm text-gray-500 flex items-center gap-1">
@@ -624,9 +622,9 @@ const MyBookings = () => {
 
                         {/* Appointment Details */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                          <div className="flex items-center gap-3 p-3 bg-customGreen/5 rounded-xl">
-                            <div className="w-10 h-10 bg-customGreen/10 rounded-lg flex items-center justify-center">
-                              <CalendarIcon className="w-5 h-5 text-customGreen" />
+                          <div className="flex items-center gap-3 p-3 bg-customGray/5 rounded-xl">
+                            <div className="w-10 h-10 bg-customGray/10 rounded-lg flex items-center justify-center">
+                              <CalendarIcon className="w-5 h-5 text-customGray" />
                             </div>
                             <div>
                               <p className="text-xs text-gray-500 font-medium">Date</p>
@@ -636,9 +634,9 @@ const MyBookings = () => {
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-3 p-3 bg-customGreen/5 rounded-xl">
-                            <div className="w-10 h-10 bg-customGreen/10 rounded-lg flex items-center justify-center">
-                              <TimeIcon className="w-5 h-5 text-customGreen" />
+                          <div className="flex items-center gap-3 p-3 bg-customGray/5 rounded-xl">
+                            <div className="w-10 h-10 bg-customGray/10 rounded-lg flex items-center justify-center">
+                              <TimeIcon className="w-5 h-5 text-customGray" />
                             </div>
                             <div>
                               <p className="text-xs text-gray-500 font-medium">Time</p>
@@ -648,9 +646,9 @@ const MyBookings = () => {
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-3 p-3 bg-customGreen/5 rounded-xl">
-                            <div className="w-10 h-10 bg-customGreen/10 rounded-lg flex items-center justify-center">
-                              <span className="text-lg font-bold text-customGreen">$</span>
+                          <div className="flex items-center gap-3 p-3 bg-customGray/5 rounded-xl">
+                            <div className="w-10 h-10 bg-customGray/10 rounded-lg flex items-center justify-center">
+                              <span className="text-lg font-bold text-customGray">$</span>
                             </div>
                             <div>
                               <p className="text-xs text-gray-500 font-medium">Session Fee</p>
@@ -724,7 +722,7 @@ const MyBookings = () => {
                       </div>
 
                       {/* Right Section - Actions */}
-                      <div className="lg:w-64 bg-customGreen/10 border-l border-gray-100">
+                      <div className="lg:w-64 bg-customGray/5">
                         <div className="flex flex-col py-6 lg:py-8 px-6 lg:px-8 h-full">
                           <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-2">Actions</p>
 

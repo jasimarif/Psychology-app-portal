@@ -594,19 +594,17 @@ const AdminPanel = () => {
         <div className="flex flex-1 flex-col gap-4 p-4 lg:p-8 bg-gray-50 min-h-[calc(100vh-4rem)] animate-in fade-in slide-in-from-bottom-4 duration-500">
           {/* Header Section */}
           <div className="mb-4">
-            <div className="flex items-center justify-between mb-6 select-none">
-              <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <ShieldCheck className="w-8 h-8 text-customGreenHover" />
-                  <h1 className="text-3xl md:text-4xl font-bold text-customGreenHover">
-                    Admin Panel
-                  </h1>
-                </div>
-                <p className="text-gray-500 text-lg">
-                  Manage psychologists, users, and bookings
-                </p>
-              </div>
-            </div>
+            <header className="select-none">
+              <p className="text-xs font-medium tracking-[0.2em] uppercase text-customGreen mb-4">
+                Administration
+              </p>
+              <h1 className="text-5xl md:text-6xl font-light text-gray-700 tracking-tight mb-4">
+                Admin Panel
+              </h1>
+              <p className="text-lg text-gray-500 font-light max-w-xl">
+                Manage psychologists, users, and bookings
+              </p>
+            </header>
 
             {/* Statistics Cards */}
             {stats && (
