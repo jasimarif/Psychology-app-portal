@@ -317,7 +317,7 @@ const ProfileEdit = () => {
         <div className="flex flex-1 flex-col gap-4 p-4 lg:p-8 bg-white min-h-[calc(100vh-4rem)] animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="mb-4">
             <header className="select-none">
-              <p className="text-xs font-medium tracking-[0.2em] uppercase text-customGreen mb-4">
+              <p className="text-xs font-medium tracking-[0.2em] uppercase text-customGray mb-4">
                 Profile Management
               </p>
               <h1 className="text-5xl md:text-6xl font-light text-gray-700 tracking-tight mb-4">
@@ -337,7 +337,7 @@ const ProfileEdit = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Basic Information */}
-            <Card className="border-customGreen/10 shadow-none border">
+            <Card className="border-customGray/10 shadow-none border">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-gray-700 select-none">
                 <ProfileIcon className="w-5 h-5" />
@@ -351,7 +351,7 @@ const ProfileEdit = () => {
                   <Label>Profile Picture</Label>
                   <div className="flex items-center gap-4">
                     <div className="relative">
-                      <div className="w-24 h-24 rounded-full border-2 border-customGreen/20 overflow-hidden bg-gray-100 flex items-center justify-center">
+                      <div className="w-24 h-24 rounded-full border-2 border-customGray/20 overflow-hidden bg-gray-100 flex items-center justify-center">
                         {imagePreview ? (
                           <img src={imagePreview} alt="Profile" className="w-full h-full object-cover" />
                         ) : (
@@ -376,7 +376,7 @@ const ProfileEdit = () => {
                         onChange={handleImageChange}
                         className="hidden"
                       />
-                      <Button type="button" variant="outline" onClick={handleImageClick} className="border-customGreen/20 hover:bg-customGreen/5 text-customGreen select-none">
+                      <Button type="button" variant="outline" onClick={handleImageClick} className="border-customGray/20 hover:bg-lightGray text-customGray select-none">
                         <Upload className="w-4 h-4 mr-2" />
                         {imagePreview ? "Change Photo" : "Upload Photo"}
                       </Button>
@@ -394,7 +394,7 @@ const ProfileEdit = () => {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="focus-visible:ring-customGreen"
+                      className="focus-visible:ring-customGray"
                     />
                   </div>
                   <div className="space-y-2">
@@ -405,7 +405,7 @@ const ProfileEdit = () => {
                       value={formData.title}
                       onChange={handleInputChange}
                       required
-                      className="focus-visible:ring-customGreen"
+                      className="focus-visible:ring-customGray"
                     />
                   </div>
                 </div>
@@ -420,7 +420,7 @@ const ProfileEdit = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="focus-visible:ring-customGreen"
+                      className="focus-visible:ring-customGray"
                     />
                   </div>
                   <div className="space-y-2">
@@ -431,7 +431,7 @@ const ProfileEdit = () => {
                       type="tel"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="focus-visible:ring-customGreen"
+                      className="focus-visible:ring-customGray"
                     />
                   </div>
                 </div>
@@ -445,7 +445,7 @@ const ProfileEdit = () => {
                       value={formData.location}
                       onChange={handleInputChange}
                       required
-                      className="focus-visible:ring-customGreen"
+                      className="focus-visible:ring-customGray"
                     />
                   </div>
                   <div className="space-y-2">
@@ -456,7 +456,7 @@ const ProfileEdit = () => {
                       value={formData.experience}
                       onChange={handleInputChange}
                       required
-                      className="focus-visible:ring-customGreen"
+                      className="focus-visible:ring-customGray"
                     />
                   </div>
                 </div>
@@ -471,7 +471,7 @@ const ProfileEdit = () => {
                         value="male"
                         checked={formData.gender === 'male'}
                         onChange={handleInputChange}
-                        className="w-4 h-4 text-customGreen border-gray-300 focus:ring-customGreen"
+                        className="w-4 h-4 text-customGray border-gray-300 focus:ring-customGray"
                       />
                       <span className="text-gray-700">Male</span>
                     </label>
@@ -482,7 +482,7 @@ const ProfileEdit = () => {
                         value="female"
                         checked={formData.gender === 'female'}
                         onChange={handleInputChange}
-                        className="w-4 h-4 text-customGreen border-gray-300 focus:ring-customGreen"
+                        className="w-4 h-4 text-customGray border-gray-300 focus:ring-customGray"
                       />
                       <span className="text-gray-700">Female</span>
                     </label>
@@ -498,14 +498,14 @@ const ProfileEdit = () => {
                     onChange={handleInputChange}
                     rows={5}
                     required
-                    className="focus-visible:ring-customGreen"
+                    className="focus-visible:ring-customGray"
                   />
                 </div>
               </CardContent>
             </Card>
 
             {/* Specialties & Languages */}
-            <Card className="border-customGreen/10 shadow-none border">
+            <Card className="border-customGray/10 shadow-none border">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-gray-700 select-none">
                   <StethoscopeIcon className="w-5 h-5" />
@@ -523,15 +523,15 @@ const ProfileEdit = () => {
                       onChange={(e) => setCurrentSpecialty(e.target.value)}
                       placeholder="e.g., Anxiety, Depression, PTSD"
                       onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addSpecialty())}
-                      className="focus-visible:ring-customGreen"
+                      className="focus-visible:ring-customGray"
                     />
-                    <Button type="button" onClick={addSpecialty} variant="outline" className="border-customGreen/20 hover:bg-customGreen/5 text-customGreen">
+                    <Button type="button" onClick={addSpecialty} variant="outline" className="border-customGray/20 hover:bg-lightGray text-customGray">
                       <Plus className="w-4 h-4" />
                     </Button>
                   </div>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {formData.specialties.map((specialty, index) => (
-                      <Badge key={index} variant="secondary" className="px-3 py-1 bg-customGreen/10 text-customGreen hover:bg-customGreen/20">
+                      <Badge key={index} variant="secondary" className="px-3 py-1 bg-customGray/10 text-customGray hover:bg-customGray/20">
                         {specialty}
                         <button
                           type="button"
@@ -554,15 +554,15 @@ const ProfileEdit = () => {
                       onChange={(e) => setCurrentLanguage(e.target.value)}
                       placeholder="e.g., English, Spanish"
                       onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addLanguage())}
-                      className="focus-visible:ring-customGreen"
+                      className="focus-visible:ring-customGray"
                     />
-                    <Button type="button" onClick={addLanguage} variant="outline" className="border-customGreen/20 hover:bg-customGreen/5 text-customGreen">
+                    <Button type="button" onClick={addLanguage} variant="outline" className="border-customGray/20 hover:bg-lightGray text-customGray">
                       <Plus className="w-4 h-4" />
                     </Button>
                   </div>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {formData.languages.map((language, index) => (
-                      <Badge key={index} variant="secondary" className="px-3 py-1 bg-customGreen/10 text-customGreen hover:bg-customGreen/20">
+                      <Badge key={index} variant="secondary" className="px-3 py-1 bg-customGray/10 text-customGray hover:bg-customGray/20">
                         {language}
                         <button
                           type="button"
@@ -579,7 +579,7 @@ const ProfileEdit = () => {
             </Card>
 
             {/* Education */}
-            <Card className="border-customGreen/10 shadow-none border">
+            <Card className="border-customGray/10 shadow-none border">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-gray-700 select-none">
                   <GraduationIcon className="w-5 h-5" />
@@ -589,7 +589,7 @@ const ProfileEdit = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 {formData.education.map((edu, index) => (
-                  <div key={index} className="p-4 border border-customGreen/10 rounded-lg space-y-4 bg-customGreen/5">
+                  <div key={index} className="p-4 border border-customGray/10 rounded-lg space-y-4 bg-lightGray">
                     <div className="flex justify-between items-center">
                       <h4 className="font-medium text-gray-700">Education {index + 1}</h4>
                       {formData.education.length > 1 && (
@@ -611,7 +611,7 @@ const ProfileEdit = () => {
                           value={edu.degree}
                           onChange={(e) => updateEducation(index, "degree", e.target.value)}
                           placeholder="Ph.D. in Clinical Psychology"
-                          className="bg-white focus-visible:ring-customGreen"
+                          className="bg-white focus-visible:ring-customGray"
                         />
                       </div>
                       <div className="space-y-2">
@@ -620,7 +620,7 @@ const ProfileEdit = () => {
                           value={edu.institution}
                           onChange={(e) => updateEducation(index, "institution", e.target.value)}
                           placeholder="University of California"
-                          className="bg-white focus-visible:ring-customGreen"
+                          className="bg-white focus-visible:ring-customGray"
                         />
                       </div>
                     </div>
@@ -630,12 +630,12 @@ const ProfileEdit = () => {
                         value={edu.year}
                         onChange={(e) => updateEducation(index, "year", e.target.value)}
                         placeholder="2010 - 2015"
-                        className="bg-white focus-visible:ring-customGreen"
+                        className="bg-white focus-visible:ring-customGray"
                       />
                     </div>
                   </div>
                 ))}
-                <Button type="button" variant="outline" onClick={addEducation} className="w-full border-dashed border-2 hover:border-customGreen hover:text-customGreen cursor-pointer select-none">
+                <Button type="button" variant="outline" onClick={addEducation} className="w-full border-dashed border-2 hover:border-customGray hover:text-customGray cursor-pointer select-none">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Education
                 </Button>
@@ -647,14 +647,14 @@ const ProfileEdit = () => {
                     name="licenseNumber"
                     value={formData.licenseNumber}
                     onChange={handleInputChange}
-                    className="focus-visible:ring-customGreen"
+                    className="focus-visible:ring-customGray"
                   />
                 </div>
               </CardContent>
             </Card>
 
             {/* Work Experience */}
-            <Card className="border-customGreen/10 shadow-none border">
+            <Card className="border-customGray/10 shadow-none border">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-gray-700 select-none">
                   <BriefcaseIcon className="w-5 h-5" />
@@ -664,7 +664,7 @@ const ProfileEdit = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 {formData.workExperience.map((exp, index) => (
-                  <div key={index} className="p-4 border border-customGreen/10 rounded-lg space-y-4 bg-customGreen/5">
+                  <div key={index} className="p-4 border border-customGray/10 rounded-lg space-y-4 bg-lightGray">
                     <div className="flex justify-between items-center">
                       <h4 className="font-medium text-gray-700">Experience {index + 1}</h4>
                       {formData.workExperience.length > 1 && (
@@ -686,7 +686,7 @@ const ProfileEdit = () => {
                           value={exp.position}
                           onChange={(e) => updateWorkExperience(index, "position", e.target.value)}
                           placeholder="Senior Clinical Psychologist"
-                          className="bg-white focus-visible:ring-customGreen"
+                          className="bg-white focus-visible:ring-customGray"
                         />
                       </div>
                       <div className="space-y-2">
@@ -695,7 +695,7 @@ const ProfileEdit = () => {
                           value={exp.organization}
                           onChange={(e) => updateWorkExperience(index, "organization", e.target.value)}
                           placeholder="Mental Health Center"
-                          className="bg-white focus-visible:ring-customGreen"
+                          className="bg-white focus-visible:ring-customGray"
                         />
                       </div>
                     </div>
@@ -705,7 +705,7 @@ const ProfileEdit = () => {
                         value={exp.duration}
                         onChange={(e) => updateWorkExperience(index, "duration", e.target.value)}
                         placeholder="2018 - Present"
-                        className="bg-white focus-visible:ring-customGreen"
+                        className="bg-white focus-visible:ring-customGray"
                       />
                     </div>
                     <div className="space-y-2">
@@ -715,12 +715,12 @@ const ProfileEdit = () => {
                         onChange={(e) => updateWorkExperience(index, "description", e.target.value)}
                         placeholder="Describe your responsibilities and achievements..."
                         rows={3}
-                        className="bg-white focus-visible:ring-customGreen"
+                        className="bg-white focus-visible:ring-customGray"
                       />
                     </div>
                   </div>
                 ))}
-                <Button type="button" variant="outline" onClick={addWorkExperience} className="w-full border-dashed border-2 hover:border-customGreen hover:text-customGreen cursor-pointer select-none">
+                <Button type="button" variant="outline" onClick={addWorkExperience} className="w-full border-dashed border-2 hover:border-customGray hover:text-customGray cursor-pointer select-none">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Work Experience
                 </Button>
@@ -728,7 +728,7 @@ const ProfileEdit = () => {
             </Card>
 
             {/* Pricing & Availability */}
-            <Card className="border-customGreen/10 shadow-none border">
+            <Card className="border-customGray/10 shadow-none border">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-gray-700 select-none">
                   <TimeIcon className="w-5 h-5" />
@@ -750,7 +750,7 @@ const ProfileEdit = () => {
                       value={formData.price}
                       onChange={handleInputChange}
                       placeholder="150"
-                      className="pl-7 focus-visible:ring-customGreen"
+                      className="pl-7 focus-visible:ring-customGray"
                       required
                     />
                   </div>
@@ -807,7 +807,7 @@ const ProfileEdit = () => {
             {/* Submit Buttons */}
             <div className="flex justify-end gap-4">
         
-              <Button type="submit" className="bg-customGreen hover:bg-customGreenHover cursor-pointer select-none" disabled={loading || deleting}>
+              <Button type="submit" className="bg-customGray hover:bg-customGray/90 cursor-pointer select-none" disabled={loading || deleting}>
                 {loading ? (
                   <>
                     Saving
