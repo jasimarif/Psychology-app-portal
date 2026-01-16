@@ -339,17 +339,17 @@ function Dashboard() {
                   <div className="flex-1 space-y-4">
                     {/* Next Session Preview */}
                     {recentBookings.find(b => b.status === 'confirmed') ? (
-                      <div className="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100">
+                      <div className="p-5 bg-lightGray rounded-2xl">
                         <div className="flex items-center gap-2 mb-3">
-                          <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                          <span className="text-xs font-semibold text-blue-600 uppercase tracking-wide">Next Session</span>
+                          <div className="w-2 h-2 rounded-full bg-customGray/10 animate-pulse"></div>
+                          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Next Session</span>
                         </div>
                         {(() => {
                           const nextSession = recentBookings.find(b => b.status === 'confirmed')
                           return (
                             <div className="flex items-center gap-4">
-                              <Avatar className="w-12 h-12 ring-2 ring-blue-200">
-                                <AvatarFallback className="bg-blue-100 text-blue-600 font-bold">
+                              <Avatar className="w-12 h-12 ring-2 ring-customGray/10">
+                                <AvatarFallback className="bg-customGray/10 text-customGray font-bold">
                                   {(nextSession.userName || nextSession.userEmail || 'C')[0].toUpperCase()}
                                 </AvatarFallback>
                               </Avatar>
@@ -364,7 +364,7 @@ function Dashboard() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="rounded-xl border-blue-200 text-blue-600 hover:bg-blue-50"
+                                className="rounded-xl border-customGray/10 text-customGray hover:bg-customGray/10"
                                 onClick={() => navigate('/bookings')}
                               >
                                 View
@@ -383,36 +383,36 @@ function Dashboard() {
 
                     {/* Performance Metrics */}
                     <div className="grid grid-cols-2 gap-3">
-                      <div className="p-4 bg-purple-50/80 rounded-xl text-center">
-                        <p className="text-2xl font-bold text-purple-600">
+                      <div className="p-4 bg-lightGray rounded-xl text-center">
+                        <p className="text-2xl font-bold text-gray-700">
                           ${stats.completed > 0 ? Math.round(stats.totalEarnings / stats.completed) : 0}
                         </p>
-                        <p className="text-xs text-gray-500">Avg. per Session</p>
+                        <p className="text-sm text-gray-500">Avg. per Session</p>
                       </div>
-                      <div className="p-4 bg-teal-50/80 rounded-xl text-center">
-                        <p className="text-2xl font-bold text-teal-600">
+                      <div className="p-4 bg-lightGray rounded-xl text-center">
+                        <p className="text-2xl font-bold text-gray-700">
                           {stats.total > 0 ? Math.round(((stats.total - stats.cancelled) / stats.total) * 100) : 100}%
                         </p>
-                        <p className="text-xs text-gray-500">Retention Rate</p>
+                        <p className="text-sm text-gray-500">Retention Rate</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Earnings Card */}
-                <div className="p-6 bg-gradient-to-br from-customGray to-customGray/90 rounded-2xl text-white">
+                <div className="p-6 bg-lightGray rounded-2xl">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-white/70 mb-1">Total Earnings</p>
-                      <p className="text-4xl font-bold">
+                      <p className="text-sm text-gray-500 mb-1">Total Earnings</p>
+                      <p className="text-4xl font-bold text-gray-700">
                         ${loading ? '...' : stats.totalEarnings.toLocaleString()}
                       </p>
-                      <p className="text-sm text-white/60 mt-2">
+                      <p className="text-sm text-gray-500 mt-2">
                         ~${stats.completed > 0 ? Math.round(stats.totalEarnings / stats.completed) : 0} per session
                       </p>
                     </div>
-                    <div className="w-20 h-20 bg-white/10 rounded-2xl flex items-center justify-center">
-                      <DashboardFileIcon className="w-10 h-10 text-white/80" />
+                    <div className="w-20 h-20 bg-customGray/10 rounded-2xl flex items-center justify-center">
+                      <DashboardFileIcon className="w-10 h-10 text-customGray" />
                     </div>
                   </div>
                 </div>
