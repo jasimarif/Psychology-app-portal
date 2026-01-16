@@ -302,9 +302,9 @@ const AvailabilitySetup = () => {
 
         {/* Current Availability Summary */}
         {availability.schedule.length > 0 && (
-          <Card className="mb-6 bg-customGreen/5 border-customGreen/20 shadow-none border-none">
+          <Card className="mb-6 bg-lightGray border-customGray/10 shadow-none border-none">
             <CardHeader>
-              <CardTitle className="text-lg text-customGreen flex items-center gap-2 select-none">
+              <CardTitle className="text-lg text-customGray flex items-center gap-2 select-none">
                 <TimeIcon className="w-5 h-5" />
                 Current Availability
               </CardTitle>
@@ -314,13 +314,13 @@ const AvailabilitySetup = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="mb-4">
-                <div className="bg-white p-3 rounded-md border border-customGreen/10">
+                <div className="bg-white p-3 rounded-md border border-customGray/10">
                   <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Session Duration</p>
                   <p className="text-lg font-bold text-gray-700">{availability.sessionDuration} minutes</p>
                 </div>
               </div>
 
-              <div className="bg-white p-4 rounded-md border border-customGreen/10">
+              <div className="bg-white p-4 rounded-md border border-customGray/10">
                 <p className="text-xs font-semibold text-gray-500 uppercase mb-3">Weekly Schedule</p>
                 <div className="space-y-2">
                   {availability.schedule
@@ -338,7 +338,7 @@ const AvailabilitySetup = () => {
                             {activeSlots.length > 0 ? (
                               activeSlots.map((slot, slotIdx) => (
                                 <div key={slotIdx} className="flex items-center gap-2 text-sm text-gray-500">
-                                  <TimeIcon className="w-3 h-3 text-customGreen" />
+                                  <TimeIcon className="w-3 h-3 text-customGray" />
                                   <span>{formatTime24to12(slot.startTime)} - {formatTime24to12(slot.endTime)}</span>
                                 </div>
                               ))
@@ -357,7 +357,7 @@ const AvailabilitySetup = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* General Settings */}
-          <Card className="border-customGreen/10 shadow-none">
+          <Card className="border-customGray/10 shadow-none">
             <CardHeader>
               <CardTitle className='select-none'>General Settings</CardTitle>
               <CardDescription className='select-none'>Set your session duration</CardDescription>
@@ -385,14 +385,14 @@ const AvailabilitySetup = () => {
           </Card>
 
           {/* Weekly Schedule */}
-          <Card className="border-customGreen/10 shadow-none">
+          <Card className="border-customGray/10 shadow-none">
             <CardHeader>
               <CardTitle className='select-none'>Weekly Schedule</CardTitle>
               <CardDescription className='select-none'>Configure your available time slots for each day</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {availability.schedule.map((day, dayIndex) => (
-                <div key={dayIndex} className="p-4  rounded-lg space-y-4 bg-customGreen/5">
+                <div key={dayIndex} className="p-4  rounded-lg space-y-4 bg-lightGray">
                   <div className="flex justify-between items-center">
                     <div className="flex-1 max-w-xs">
                       <Label>Day of Week</Label>
@@ -424,12 +424,12 @@ const AvailabilitySetup = () => {
                   </div>
 
                   {/* Time Slots */}
-                  <div className="space-y-3 pl-0 sm:pl-4 sm:border-l-2 border-customGreen/20">
+                  <div className="space-y-3 pl-0 sm:pl-4 sm:border-l-2 border-customGray/20">
                     <Label className="text-sm font-medium">Time Slots</Label>
                     {day.slots.map((slot, slotIndex) => (
-                      <div key={slotIndex} className="flex flex-col gap-3 p-3 bg-white rounded-md border border-customGreen/10">
+                      <div key={slotIndex} className="flex flex-col gap-3 p-3 bg-white rounded-md border border-customGray/10">
                         <div className="flex items-start gap-2">
-                          <TimeIcon className="w-4 h-4 text-customGreen shrink-0 mt-2.5" />
+                          <TimeIcon className="w-4 h-4 text-customGray shrink-0 mt-2.5" />
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 flex-1">
                             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 flex-1">
                               <div className="w-full sm:flex-1">
@@ -459,7 +459,7 @@ const AvailabilitySetup = () => {
                             <Switch
                               checked={slot.isActive}
                               onCheckedChange={(checked) => updateTimeSlot(dayIndex, slotIndex, 'isActive', checked)}
-                              className="data-[state=checked]:bg-customGreen"
+                              className="data-[state=checked]:bg-customGray"
                             />
                             <span className="text-sm text-gray-500">Active</span>
                           </div>
@@ -495,7 +495,7 @@ const AvailabilitySetup = () => {
                 type="button"
                 variant="outline"
                 onClick={addDaySchedule}
-                className="w-full border-dashed border-2 hover:border-customGreen hover:text-customGreen select-none cursor-pointer"
+                className="w-full border-dashed border-2 hover:border-customGray hover:text-customGray select-none cursor-pointer"
                 disabled={availability.schedule.length >= 7}
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -509,7 +509,7 @@ const AvailabilitySetup = () => {
         
             <Button
               type="submit"
-              className="bg-customGreen hover:bg-customGreenHover cursor-pointer"
+              className="bg-customGray hover:bg-customGray/90 cursor-pointer"
               disabled={loading}
             >
               {loading ? (
