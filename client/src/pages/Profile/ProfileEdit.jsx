@@ -255,7 +255,7 @@ const ProfileEdit = () => {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 bg-gray-50 px-4 select-none">
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 select-none">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
@@ -302,7 +302,7 @@ const ProfileEdit = () => {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 a px-4 bg-gray-50 animate-in fade-in duration-300 select-none">
+        <header className="flex h-16 shrink-0 items-center gap-2 a px-4 border-b animate-in fade-in duration-300 select-none">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
